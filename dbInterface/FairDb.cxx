@@ -160,6 +160,12 @@ TString FairDb::MakeDateTimeString(const ValTimeStamp& timeStamp)
 
 TString FairDb::StreamAsString(const Int_t* arr, Int_t size)
 {
+  if (!arr)
+  {
+    size = 0;
+    return "";
+  }
+
   // ROOT IO is used to create a packed
   // hexadecimal string out of the object
 
@@ -176,6 +182,12 @@ TString FairDb::StreamAsString(const Int_t* arr, Int_t size)
 
 TString FairDb::StreamAsString(const UInt_t* arr, Int_t size)
 {
+  if (!arr)
+  {
+    size = 0;
+    return "";
+  }
+
   // ROOT IO is used to create a packed
   // hexadecimal string out of the object
 
@@ -192,6 +204,12 @@ TString FairDb::StreamAsString(const UInt_t* arr, Int_t size)
 
 TString FairDb::StreamAsString(const Short_t* arr, Int_t size)
 {
+  if (!arr)
+  {
+    size = 0;
+    return "";
+  }
+
   // ROOT IO is used to create a packed
   // hexadecimal string out of the object
 
@@ -209,6 +227,12 @@ TString FairDb::StreamAsString(const Short_t* arr, Int_t size)
 
 TString FairDb::StreamAsString(const UShort_t* arr, Int_t size)
 {
+  if (!arr)
+  {
+    size = 0;
+    return "";
+  }
+
   // ROOT IO is used to create a packed
   // hexadecimal string out of the object
 
@@ -226,6 +250,12 @@ TString FairDb::StreamAsString(const UShort_t* arr, Int_t size)
 
 TString FairDb::StreamAsString(const Bool_t* arr, Int_t size)
 {
+  if (!arr)
+  {
+    size = 0;
+    return "";
+  }
+
   // ROOT IO is used to create a packed
   // hexadecimal string out of the object
 
@@ -242,6 +272,12 @@ TString FairDb::StreamAsString(const Bool_t* arr, Int_t size)
 
 TString FairDb::StreamAsString(const Float_t* arr, Int_t size)
 {
+  if (!arr)
+  {
+    size = 0;
+    return "";
+  }
+
   // ROOT IO is used to create a packed
   // hexadecimal string out of the object
 
@@ -258,6 +294,12 @@ TString FairDb::StreamAsString(const Float_t* arr, Int_t size)
 
 TString FairDb::StreamAsString(const Double_t* arr, Int_t size)
 {
+  if (!arr)
+  {
+    size = 0;
+    return "";
+  }
+
   // ROOT IO is used to create a packed
   // hexadecimal string out of the object
 
