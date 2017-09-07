@@ -42,6 +42,7 @@ class FairDbStreamer : public TObject
     const TString  AsString() const { return fString;};
     void SetString(TString aStr) { fString=aStr;}
     Int_t GetSize() {return fSize;}
+    void SetSize(Int_t aSize) {fSize=aSize;}
     FairDb::DataTypes GetDataType() { return fType;}
 
     // Fill functions for arrays & objects
