@@ -148,4 +148,9 @@ if (Boost_FOUND)
 add_subdirectory(dbExamples) 
 endif()
 
+
+OPTION(JSONCPP_WITH_TESTS "Compile and (for jsoncpp_check) run JsonCpp test executables" OFF)
+OPTION(JSONCPP_WITH_POST_BUILD_UNITTEST "Automatically run unit-tests as a post build step" OFF)
+OPTION(BUILD_SHARED_LIBS "Build jsoncpp_lib as a shared library." ON)
+OPTION(BUILD_STATIC_LIBS "Build jsoncpp_lib static library." OFF)
 add_subdirectory(db3rdParty/jsoncpp)
