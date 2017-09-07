@@ -126,9 +126,9 @@ set(LINKDEF FairDBLinkDef.h)
 set(LIBRARY_NAME FairDB)
 
 if(ROOT_VERSION_MAJOR VERSION_LESS 6 )
-set(DEPENDENCIES Net RIO Cint Core ParBase)
+set(DEPENDENCIES Net RIO Cint Core ParBase jsoncpp)
 else()
-set(DEPENDENCIES Net RIO Core ParBase)
+set(DEPENDENCIES Net RIO Core ParBase jsoncpp)
 endif()
 
 GENERATE_LIBRARY()
@@ -148,3 +148,4 @@ if (Boost_FOUND)
 add_subdirectory(dbExamples) 
 endif()
 
+add_subdirectory(db3rdParty/jsoncpp)
