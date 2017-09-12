@@ -29,6 +29,9 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/dbase/dbInput
   ${CMAKE_SOURCE_DIR}/dbase/dbIO
   ${CMAKE_SOURCE_DIR}/parbase
+
+  ### 3rdParty
+  ${CMAKE_SOURCE_DIR}/dbase/db3rdParty/jsoncpp/
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
@@ -110,7 +113,6 @@ dbIO/FairDetParTSQLIo.cxx
 dbIO/FairGenericParTSQLIo.cxx
 )
 
-
 install(FILES "dbUtils/FairDbLogBFormat.h" DESTINATION include)
 install(FILES "dbInterface/FairDbReader.tpl" DESTINATION include)
 install(FILES "dbInterface/FairDbWriter.tpl" DESTINATION include)
@@ -118,17 +120,21 @@ install(FILES "dbInterface/FairDbGenericParSet.tpl" DESTINATION include)
 install(FILES "dbInput/db_detector_def.h" DESTINATION include)
 install(FILES "dbInput/prepare_db.sql" DESTINATION share/dbInput)
 
+### 3rdParty
+install(DIRECTORY "db3rdParty/jsoncpp/json" DESTINATION include)
 
 CHANGE_FILE_EXTENSION(*.cxx *.h HEADERS "${SRCS}")
 set(HEADERS ${HEADERS} ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbReader.h ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbWriter.h
   ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbGenericParSet.h)
+set(SRCS ${SRCS} db3rdParty/jsoncpp/jsoncpp.cpp)
+
 set(LINKDEF FairDBLinkDef.h)
 set(LIBRARY_NAME FairDB)
 
 if(ROOT_VERSION_MAJOR VERSION_LESS 6 )
-set(DEPENDENCIES Net RIO Cint Core ParBase jsoncpp)
+set(DEPENDENCIES Net RIO Cint Core ParBase)
 else()
-set(DEPENDENCIES Net RIO Core ParBase jsoncpp)
+set(DEPENDENCIES Net RIO Core ParBase)
 endif()
 
 GENERATE_LIBRARY()
@@ -147,10 +153,3 @@ endif()
 if (Boost_FOUND)
 add_subdirectory(dbExamples) 
 endif()
-
-
-OPTION(JSONCPP_WITH_TESTS "Compile and (for jsoncpp_check) run JsonCpp test executables" OFF)
-OPTION(JSONCPP_WITH_POST_BUILD_UNITTEST "Automatically run unit-tests as a post build step" OFF)
-OPTION(BUILD_SHARED_LIBS "Build jsoncpp_lib as a shared library." ON)
-OPTION(BUILD_STATIC_LIBS "Build jsoncpp_lib static library." ON)
-add_subdirectory(db3rdParty/jsoncpp)
