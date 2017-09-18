@@ -60,7 +60,9 @@ class FairDbGenericParSet : public FairDbParSet
     // RuntimeDb IO 
     virtual void clear();
     virtual void fill(UInt_t rid=0);
+#ifndef __CINT__
     static TObjArray* GetBy(std::function<bool(T*)> condition, UInt_t rid=0);
+#endif
     static T* GetByIndex(Int_t index, UInt_t rid=0);
     static TObjArray* GetAll(UInt_t rid=0);
     virtual void store(UInt_t rid=0);
