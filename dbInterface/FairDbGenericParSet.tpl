@@ -165,31 +165,7 @@ void FairDbGenericParSet<T>::fill(UInt_t rid)
 }
 
 template<typename T>
-T* FairDbGenericParSet<T>::Get(UInt_t rid)
-{
-  T* instance = new T();
-  instance->fill(rid);
-  return instance;
-}
-
-template<typename T>
-T* FairDbGenericParSet<T>::GetById(Int_t id, UInt_t rid)
-{
-  return FairDbGenericParSet<T>::GetByIndex(id, rid);
-}
-
-template<typename T>
-T* FairDbGenericParSet<T>::GetByIndex(Int_t index, UInt_t rid)
-{
-  T instance;
-  FairDbReader<T> paramReader;
-
-  paramReader.Activate( instance.GetContext(rid), instance.GetVersion());
-  return (T*)paramReader.GetRowByIndex(index);
-}
-
-template<typename T>
-TObjArray* FairDbGenericParSet<T>::GetArray(Int_t compId, UInt_t rid)
+TObjArray* FairDbGenericParSet<T>::GetBy(std::function<bool(T*)> condition, UInt_t rid)
 {
   T instance;
   FairDbReader<T> paramReader;
@@ -206,22 +182,35 @@ TObjArray* FairDbGenericParSet<T>::GetArray(Int_t compId, UInt_t rid)
     if (!inst)
       continue;
 
-    // Read grouped
-    if (compId != -1)
+    if (condition(inst))
     {
-      const FairDbValRecord *valRecord = paramReader.GetValidityRec(inst);
-      if (valRecord->GetAggregateNo() != compId)
-        continue;
+      result->Add(inst);
     }
-    result->Add(inst);
   }
 
   if (result->GetEntries()) {
+    result->Compress();
     return result;
   } else {
     delete result;
     return NULL;
   }
+}
+
+template<typename T>
+T* FairDbGenericParSet<T>::GetByIndex(Int_t index, UInt_t rid)
+{
+  T instance;
+  FairDbReader<T> paramReader;
+
+  paramReader.Activate( instance.GetContext(rid), instance.GetVersion());
+  return (T*)paramReader.GetRowByIndex(index);
+}
+
+template<typename T>
+TObjArray* FairDbGenericParSet<T>::GetAll(UInt_t rid)
+{
+  return FairDbGenericParSet<T>::GetBy([](T *inst) -> bool { return true; }, rid);
 }
 
 template<typename T>
@@ -287,44 +276,22 @@ void FairDbGenericParSet<T>::store(UInt_t rid)
 }
 
 template <typename T>
-void FairDbGenericParSet<T>::StoreArray(TObjArray *array, Int_t compId, UInt_t rid)
+void FairDbGenericParSet<T>::StoreArray(TObjArray *array, UInt_t rid)
 {
+  if (!array)
+    return;
+
   Int_t numRows = array->GetEntries();
   if (!numRows)
     return;
 
-  T* parSet = (T*) array->At(0);
-  if (!parSet)
-    return;
-
-  // Store grouped
-  if (compId != -1)
+  for (Int_t i=0; i<numRows; i++)
   {
-    parSet->SetCompId(compId);
-    FairDbWriter<T> *paramWriter = parSet->ActivateWriter(rid);
-    paramWriter->SetComboNo(compId);
+    T* parSet = (T*) array->At(i);
+    if (!parSet)
+      continue;
 
-    for (Int_t i=0; i<numRows; i++)
-    {
-      parSet = (T*) array->At(i);
-      if (!parSet)
-        continue;
-
-      parSet->SetCompId(compId);
-      *paramWriter << *parSet;
-    }
-
-    paramWriter->Close();
-  } else {
-    // Store individually
-    for (Int_t i=0; i<numRows; i++)
-    {
-      parSet = (T*) array->At(i);
-      if (!parSet)
-        continue;
-
-      parSet->store(rid);
-    }
+    parSet->store(rid);
   }
 }
 
