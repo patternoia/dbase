@@ -3,6 +3,7 @@
 #include "TClass.h"
 #include "TDataMember.h"
 #include "TList.h"
+#include "TSQLStatement.h"
 
 ClassImpT(FairDbGenericParSet,T)
 
@@ -211,6 +212,37 @@ template<typename T>
 TObjArray* FairDbGenericParSet<T>::GetAll(UInt_t rid)
 {
   return FairDbGenericParSet<T>::GetBy([](T *inst) -> bool { return true; }, rid);
+}
+
+template<typename T>
+TObjArray* FairDbGenericParSet<T>::GetAllVersions()
+{
+  auto_ptr<FairDbStatement> stmtDbn(fMultConn->CreateStatement(GetDbEntry()));
+  if ( ! stmtDbn.get() ) {
+    DBLOG("FairDb",FairDbLog::kFatal) << "FairDbGenericParSet::Store()  Cannot create statement for Database_id: " << GetDbEntry()
+         << "\n    Please check the FAIRDB_TSQL_* environment.  Quitting ... " << endl;
+    exit(1);
+  }
+
+  ostringstream oss;
+  oss << "SELECT * FROM "
+      << GetTableName() << "VAL"
+      << " WHERE "
+      << "COMPOSITEID = " << GetCompId() << " "
+      << "ORDER BY TIMESTART DESC;";
+
+  TSQLStatement* stmtTSQL = stmtDbn->ExecuteQuery(oss.str());
+
+  TObjArray *result = new TObjArray();
+  while ( stmtTSQL->NextResultRow() ) {
+    T* instance = new T();
+    instance->fill(FairDb::MakeTimeStamp(stmtTSQL->GetString(1)));
+    result->Add(instance);
+  }
+
+  delete stmtTSQL;
+
+  return result;
 }
 
 template<typename T>
