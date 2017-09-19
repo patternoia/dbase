@@ -7,7 +7,10 @@
 #include "TString.h"
 #include "TObjArray.h"
 #include "Rtypes.h"
+
+#ifndef __CINT__
 #include "json/json.h"
+#endif
 
 #include <iostream>
 #include <string>
@@ -30,6 +33,7 @@ class FairDbRelationalParSet : public FairDbGenericParSet<T>
     static T* GetById(Int_t id, UInt_t rid=0);
     static TObjArray* GetByIds(Int_t* ids, UInt_t count, UInt_t rid=0);
 
+#ifndef __CINT__   
     static T* FromJsonString(string& jsonString);
     static T* FromJson(Json::Value& json);
     static TObjArray* FromJsonArray(Json::Value& jsonArray);
@@ -39,7 +43,8 @@ class FairDbRelationalParSet : public FairDbGenericParSet<T>
 
     virtual void FillFromJson(Json::Value& json) { ; }
     virtual void StoreToJson(Json::Value& json) { ; }
-
+#endif
+    
   protected:
     Int_t fId;
 

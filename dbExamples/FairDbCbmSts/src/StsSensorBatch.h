@@ -6,7 +6,10 @@
 #include "TString.h"
 #include "TObjArray.h"
 #include "Rtypes.h"
+
+#ifndef __CINT__
 #include "json/json.h"
+#endif
 
 #include <iostream>
 #include <string>
@@ -54,9 +57,11 @@ class StsSensorBatch : public FairDbRelationalParSet<StsSensorBatch>
     void SetDate(ValTimeStamp value) { fDate = value; }
     void SetComment(string value) { fComment = value; }
 
+#ifndef __CINT__
     virtual void FillFromJson(Json::Value& json);
     virtual void StoreToJson(Json::Value& json);
-
+#endif
+    
   private:
     TObjArray* fSensors; //! transient relation to StsSensor, Has Many
 
