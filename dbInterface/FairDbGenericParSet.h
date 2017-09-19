@@ -30,6 +30,7 @@
 #include "Riosfwd.h"                    
 #include <iostream> 
 #include <string>   
+#include <sstream>  
 #include <stdlib.h> 
 #include <memory>   
 #include <vector>   
@@ -65,6 +66,7 @@ class FairDbGenericParSet : public FairDbParSet
 #endif
     static T* GetByIndex(Int_t index, UInt_t rid=0);
     static TObjArray* GetAll(UInt_t rid=0);
+    TObjArray* GetAllVersions();
     virtual void store(UInt_t rid=0);
     static void StoreArray(TObjArray *array, UInt_t rid=0);
 
