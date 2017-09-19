@@ -117,6 +117,7 @@ install(FILES "dbUtils/FairDbLogBFormat.h" DESTINATION include)
 install(FILES "dbInterface/FairDbReader.tpl" DESTINATION include)
 install(FILES "dbInterface/FairDbWriter.tpl" DESTINATION include)
 install(FILES "dbInterface/FairDbGenericParSet.tpl" DESTINATION include)
+install(FILES "dbInterface/FairDbRelationalParSet.tpl" DESTINATION include)
 install(FILES "dbInput/db_detector_def.h" DESTINATION include)
 install(FILES "dbInput/prepare_db.sql" DESTINATION share/dbInput)
 
@@ -125,7 +126,7 @@ install(DIRECTORY "db3rdParty/jsoncpp/json" DESTINATION include)
 
 CHANGE_FILE_EXTENSION(*.cxx *.h HEADERS "${SRCS}")
 set(HEADERS ${HEADERS} ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbReader.h ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbWriter.h
-  ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbGenericParSet.h)
+  ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbGenericParSet.h ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbRelationalParSet.h)
 set(SRCS ${SRCS} db3rdParty/jsoncpp/jsoncpp.cpp)
 
 set(LINKDEF FairDBLinkDef.h)
