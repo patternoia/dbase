@@ -1,5 +1,13 @@
+/**
+* @file StsSensorBatch.h
+* @brief Sts Sensor Batch Entity FairDb class. Generated automatically
+* @author Generator by Evgeny Lavrik <evgeny.lavrik@uni-tuebingen.de>
+* @date 20.9.2017
+**/
+
 #ifndef STSSENSORBATCH_H
 #define STSSENSORBATCH_H
+
 
 #include "DataType.h"
 #include "FairDbRelationalParSet.h"
@@ -14,7 +22,6 @@
 #include <iostream>
 #include <string>
 
-using namespace std;
 class StsSensor;
 
 class StsSensorBatch : public FairDbRelationalParSet<StsSensorBatch>
@@ -45,26 +52,32 @@ class StsSensorBatch : public FairDbRelationalParSet<StsSensorBatch>
     virtual void Store(FairDbOutTableBuffer& res_out,
                        const FairDbValRecord* valrec) const;
 
-    const TObjArray* GetSensors();
+    UInt_t GetIndex(UInt_t /*def*/) const { return fId; }
 
-    static TObjArray* GetByNumber(string Number, UInt_t rid=0);
+    TObjArray* GetSensors();
 
+
+    Int_t GetId() const { return fId; }
     string GetNumber() const { return fNumber; }
     ValTimeStamp GetDate() const { return fDate; }
     string GetComment() const { return fComment; }
 
+    void SetId(Int_t value) { fId = value; SetCompId(fId); }
     void SetNumber(string value) { fNumber = value; }
     void SetDate(ValTimeStamp value) { fDate = value; }
     void SetComment(string value) { fComment = value; }
 
+    static TObjArray* GetByNumber(string Number, UInt_t rid=0);
+
 #ifndef __CINT__
-    virtual void FillFromJson(Json::Value& json);
+    virtual void FillFromJson(Json::Value json);
     virtual void StoreToJson(Json::Value& json);
 #endif
-    
+
   private:
     TObjArray* fSensors; //! transient relation to StsSensor, Has Many
 
+    Int_t fId;
     string fNumber;
     ValTimeStamp fDate;
     string fComment;
@@ -73,3 +86,4 @@ class StsSensorBatch : public FairDbRelationalParSet<StsSensorBatch>
 };
 
 #endif /* !STSSENSORBATCH_H */
+

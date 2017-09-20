@@ -34,14 +34,14 @@ class FairDbRelationalParSet : public FairDbGenericParSet<T>
     static TObjArray* GetByIds(Int_t* ids, UInt_t count, UInt_t rid=0);
 
 #ifndef __CINT__   
-    static T* FromJsonString(string& jsonString);
-    static T* FromJson(Json::Value& json);
-    static TObjArray* FromJsonArray(Json::Value& jsonArray);
+    static T* FromJsonString(string jsonString);
+    static T* FromJson(Json::Value json);
+    static TObjArray* FromJsonArray(Json::Value jsonArray);
     string ToJsonString();
     Json::Value ToJson();
     static Json::Value ToJsonArray(TObjArray* array);
 
-    virtual void FillFromJson(Json::Value& json) { ; }
+    virtual void FillFromJson(Json::Value json) { ; }
     virtual void StoreToJson(Json::Value& json) { ; }
 #endif
     

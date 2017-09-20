@@ -1,0 +1,5 @@
+#ifndef FAIRDBCBMSTSREST_H
+#define FAIRDBCBMSTSREST_H
+
+#endif /* !FAIRDBCBMSTSREST_H */
+

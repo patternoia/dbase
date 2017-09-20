@@ -55,7 +55,7 @@ TObjArray* FairDbRelationalParSet<T>::GetByIds(Int_t* ids, UInt_t count, UInt_t 
 }
 
 template<typename T>
-T* FairDbRelationalParSet<T>::FromJsonString(string& jsonString)
+T* FairDbRelationalParSet<T>::FromJsonString(string jsonString)
 {
   Json::Value json;
   string error;
@@ -74,16 +74,26 @@ T* FairDbRelationalParSet<T>::FromJsonString(string& jsonString)
 }
 
 template<typename T>
-T* FairDbRelationalParSet<T>::FromJson(Json::Value& json)
+T* FairDbRelationalParSet<T>::FromJson(Json::Value json)
 {
+  if (!json.isObject())
+  {
+    return NULL;
+  }
+
   T* instance = new T();
   instance->FillFromJson(json);
   return instance;
 }
 
 template<typename T>
-TObjArray* FairDbRelationalParSet<T>::FromJsonArray(Json::Value& jsonArray)
+TObjArray* FairDbRelationalParSet<T>::FromJsonArray(Json::Value jsonArray)
 {
+  if (!jsonArray.isArray())
+  {
+    return NULL;
+  }
+
   TObjArray *result = NULL;
   Int_t count = jsonArray.size();
 
