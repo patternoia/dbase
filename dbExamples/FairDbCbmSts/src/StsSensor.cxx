@@ -2,7 +2,7 @@
 * @file StsSensor.cxx
 * @brief Sts Sensor Entity FairDb class. Generated automatically
 * @author Generator by Evgeny Lavrik <evgeny.lavrik@uni-tuebingen.de>
-* @date 20.9.2017
+* @date 21.9.2017
 **/
 
 #include "StsSensor.h"
@@ -38,6 +38,32 @@ StsSensor::StsSensor(FairDbDetector::Detector_t detid,
   fSize(0),
   fArray(NULL)
 {
+}
+
+StsSensor::StsSensor(const StsSensor& from)
+  :FairDbRelationalParSet<StsSensor>(from)
+{
+  fBatchId = from.fBatchId;
+  fBatch = from.fBatch;
+  fBits = from.fBits;
+  fSUID = from.fSUID;
+  fSize = from.fSize;
+  fArray = from.fArray;
+}
+
+StsSensor& StsSensor::operator=(const StsSensor& from)
+{
+  if (this == &from) { return *this; }
+
+  FairDbRelationalParSet<StsSensor>::operator=(from);
+
+  SetBatchId(from.GetBatchId());
+  SetBits(from.GetBits());
+  SetSUID(from.GetSUID());
+  SetSize(from.GetSize());
+  SetArray(from.GetArray());
+
+  return *this;
 }
 
 StsSensor::~StsSensor()
@@ -77,8 +103,8 @@ string StsSensor::GetTableDefinition(const char* Name)
   string sql("create table ");
   if ( Name ) { sql += Name; }
   else { sql += GetTableName(); }
-  sql += "( SEQNO             INT NOT NULL,";
-  sql += "  ROW_ID            INT NOT NULL,";
+  sql += "( SEQNO INT NOT NULL,";
+  sql += "  ROW_ID INT NOT NULL,";
 
   sql += "  ID INT NOT NULL,";
   sql += "  BATCH_ID INT,";
@@ -87,7 +113,7 @@ string StsSensor::GetTableDefinition(const char* Name)
   sql += "  SIZE INT,";
   sql += "  ARRAY TEXT,";
 
-  sql += "  primary key(SEQNO,ROW_ID))";
+  sql += "  primary key(SEQNO,ROW_ID,ID) )";
   return sql;
 }
 
@@ -133,28 +159,19 @@ void StsSensor::Store(FairDbOutTableBuffer& res_out,
   res_out << ArrayStreamer;
 }
 
-StsSensor::StsSensor(const StsSensor& from){
-  SetCompId(from.GetCompId());
 
-  SetId(from.GetId());
-  SetBatchId(from.GetBatchId());
-  SetBits(from.GetBits());
-  SetSUID(from.GetSUID());
-  SetSize(from.GetSize());
-  SetArray(from.GetArray());
-}
+void StsSensor::SetArray(Double_t* value)
+{
+  delete[] fArray; fArray = NULL;
 
-StsSensor& StsSensor::operator=(const StsSensor& from){
-  SetCompId(from.GetCompId());
-
-  SetId(from.GetId());
-  SetBatchId(from.GetBatchId());
-  SetBits(from.GetBits());
-  SetSUID(from.GetSUID());
-  SetSize(from.GetSize());
-  SetArray(from.GetArray());
-
-  return *this;
+  if (value)
+  {
+    fArray = new Double_t[fSize];
+    for (Int_t i = 0; i < fSize; i++ )
+    {
+      fArray[i] = value[i];
+    }
+  }
 }
 
 TObjArray* StsSensor::GetByBatchId(Int_t BatchId, UInt_t rid)

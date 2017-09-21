@@ -2,7 +2,7 @@
 * @file StsSensorBatchResource.cxx
 * @brief Sts Sensor Batch Entity FairDb web resource class. Generated automatically
 * @author Generator by Evgeny Lavrik <evgeny.lavrik@uni-tuebingen.de>
-* @date 20.9.2017
+* @date 21.9.2017
 **/
 
 #include "StsSensorBatchResource.h"
@@ -19,8 +19,6 @@ StsSensorBatchResource::StsSensorBatchResource(Wt::WServer& server, Wt::WObject 
   server.addResource(this, "/StsSensorBatch/Store");
   server.addResource(this, "/StsSensorBatch/StoreArray");
 
-  server.addResource(this, "/StsSensorBatch/GetByNumber");
-
   server.addResource(this, "/StsSensorBatch/GetSensors");
 }
 
@@ -35,7 +33,6 @@ void StsSensorBatchResource::handleRequest(const Wt::Http::Request& request,
   try
   {
     string url(request.path());
-    std::cout << url << std::endl;
     string jsonString(std::istreambuf_iterator<char>(request.in()), {});
 
     Json::Value json;
@@ -56,43 +53,37 @@ void StsSensorBatchResource::handleRequest(const Wt::Http::Request& request,
 
     if (url == "/StsSensorBatch/Get")
     {
-      Get(json, response);
+      Get(json, request, response);
       return;
     }
 
     if (url == "/StsSensorBatch/GetArray")
     {
-      GetArray(json, response);
+      GetArray(json, request, response);
       return;
     }
 
     if (url == "/StsSensorBatch/GetAll")
     {
-      GetAll(json, response);
+      GetAll(json, request, response);
       return;
     }
 
     if (url == "/StsSensorBatch/Store")
     {
-      Store(json, response);
+      Store(json, request, response);
       return;
     }
 
     if (url == "/StsSensorBatch/StoreArray")
     {
-      StoreArray(json, response);
-      return;
-    }
-
-    if (url == "/StsSensorBatch/GetByNumber")
-    {
-      GetByNumber(json, response);
+      StoreArray(json, request, response);
       return;
     }
 
     if (url == "/StsSensorBatch/GetSensors")
     {
-      GetSensors(json, response);
+      GetSensors(json, request, response);
 
       return;
     }
@@ -106,7 +97,7 @@ void StsSensorBatchResource::handleRequest(const Wt::Http::Request& request,
   }
 }
 
-void StsSensorBatchResource::Get(Json::Value json, Wt::Http::Response& response)
+void StsSensorBatchResource::Get(Json::Value json, const Wt::Http::Request& request, Wt::Http::Response& response)
 {
   Int_t id = json.get("id", -1).asInt();
   Int_t rid = json.get("rid", 0).asInt();
@@ -121,7 +112,7 @@ void StsSensorBatchResource::Get(Json::Value json, Wt::Http::Response& response)
   delete instance;
 }
 
-void StsSensorBatchResource::GetArray(Json::Value json, Wt::Http::Response& response)
+void StsSensorBatchResource::GetArray(Json::Value json, const Wt::Http::Request& request, Wt::Http::Response& response)
 {
   Int_t rid = json.get("rid", 0).asInt();
   Json::Value jsonIdsArray = json.get("ids", Json::Value(Json::arrayValue));
@@ -146,7 +137,7 @@ void StsSensorBatchResource::GetArray(Json::Value json, Wt::Http::Response& resp
   delete array;
 }
 
-void StsSensorBatchResource::GetAll(Json::Value json, Wt::Http::Response& response)
+void StsSensorBatchResource::GetAll(Json::Value json, const Wt::Http::Request& request, Wt::Http::Response& response)
 {
   Int_t rid = json.get("rid", 0).asInt();
   TObjArray *array = StsSensorBatch::GetAll(rid);
@@ -155,13 +146,15 @@ void StsSensorBatchResource::GetAll(Json::Value json, Wt::Http::Response& respon
   delete array;
 }
 
-void StsSensorBatchResource::Store(Json::Value json, Wt::Http::Response& response)
+void StsSensorBatchResource::Store(Json::Value json, const Wt::Http::Request& request, Wt::Http::Response& response)
 {
   Int_t rid = json.get("rid", 0).asInt();
   Json::Value object = json.get("object", Json::Value(Json::nullValue));
   StsSensorBatch *instance = StsSensorBatch::FromJson(object);
   if (instance)
   {
+    std::string logTitle = "FairDbCbmStsREST::StsSensorBatchResource::Store() from " + request.clientAddress();
+    instance->SetLogTitle(logTitle);
     instance->store();
   } else {
     response.setStatus(400);
@@ -169,7 +162,7 @@ void StsSensorBatchResource::Store(Json::Value json, Wt::Http::Response& respons
   delete instance;
 }
 
-void StsSensorBatchResource::StoreArray(Json::Value json, Wt::Http::Response& response)
+void StsSensorBatchResource::StoreArray(Json::Value json, const Wt::Http::Request& request, Wt::Http::Response& response)
 {
   Int_t rid = json.get("rid", 0).asInt();
   Json::Value jsonArray = json.get("array", Json::Value(Json::nullValue));
@@ -177,25 +170,15 @@ void StsSensorBatchResource::StoreArray(Json::Value json, Wt::Http::Response& re
   TObjArray *array = StsSensorBatch::FromJsonArray(jsonArray);
   if (array)
   {
-    StsSensorBatch::StoreArray(array, rid);
+    std::string logTitle = "FairDbCbmStsREST::StsSensorBatchResource::StoreArray() from " + request.clientAddress();
+    StsSensorBatch::StoreArray(array, rid, logTitle);
   } else {
     response.setStatus(400);
   }
   delete array;
 }
 
-void StsSensorBatchResource::GetByNumber(Json::Value json, Wt::Http::Response& response)
-{
-  Int_t rid = json.get("rid", 0).asInt();
-  string Number = json.get("Number", -1).asString();
-  TObjArray *array = StsSensorBatch::GetByNumber(Number, rid);
-
-  Json::Value jsonArray = StsSensorBatch::ToJsonArray(array);
-  response.out() << jsonArray;
-  delete array;
-}
-
-void StsSensorBatchResource::GetSensors(Json::Value json, Wt::Http::Response& response)
+void StsSensorBatchResource::GetSensors(Json::Value json, const Wt::Http::Request& request, Wt::Http::Response& response)
 {
   Int_t id = json.get("id", -1).asInt();
   StsSensorBatch *instance = StsSensorBatch::GetById(id);

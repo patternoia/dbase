@@ -54,6 +54,10 @@ template<typename T>
 FairDbGenericParSet<T>::FairDbGenericParSet(const FairDbGenericParSet& from)
   : FairDbParSet(from)
 {
+  fDet_id = from.fDet_id;
+  fData_id = from.fData_id;
+  fTableName = from.fTableName;
+  fCompId = from.fCompId;
 }
 
 template<typename T>
@@ -62,7 +66,11 @@ FairDbGenericParSet<T>& FairDbGenericParSet<T>::operator=(const FairDbGenericPar
   if (this == &from) { return *this; }
 
   FairDbParSet::operator=(from);
- 
+  fDet_id = from.fDet_id;
+  fData_id = from.fData_id;
+  fTableName = from.fTableName;
+  fCompId = from.fCompId;
+
   return *this; 
 }  
 
@@ -183,9 +191,13 @@ TObjArray* FairDbGenericParSet<T>::GetBy(std::function<bool(T*)> condition, UInt
     if (!inst)
       continue;
 
-    if (condition(inst))
+    T* copy = new T();
+    *copy = *inst;
+    if (condition(copy))
     {
-      result->Add(inst);
+      result->Add(copy);
+    } else {
+      delete copy;
     }
   }
 
@@ -205,7 +217,15 @@ T* FairDbGenericParSet<T>::GetByIndex(Int_t index, UInt_t rid)
   FairDbReader<T> paramReader;
 
   paramReader.Activate( instance.GetContext(rid), instance.GetVersion());
-  return (T*)paramReader.GetRowByIndex(index);
+  T* row = (T*) paramReader.GetRowByIndex(index);
+  if (!row)
+  {
+    return NULL;
+  }
+
+  T* copy = new T();
+  *copy = *row;
+  return copy;
 }
 
 template<typename T>
@@ -308,7 +328,7 @@ void FairDbGenericParSet<T>::store(UInt_t rid)
 }
 
 template <typename T>
-void FairDbGenericParSet<T>::StoreArray(TObjArray *array, UInt_t rid)
+void FairDbGenericParSet<T>::StoreArray(TObjArray *array, UInt_t rid, std::string logTitle)
 {
   if (!array)
     return;
@@ -323,6 +343,10 @@ void FairDbGenericParSet<T>::StoreArray(TObjArray *array, UInt_t rid)
     if (!parSet)
       continue;
 
+    if (!logTitle.empty())
+    {
+      parSet->SetLogTitle(logTitle);
+    }
     parSet->store(rid);
   }
 }

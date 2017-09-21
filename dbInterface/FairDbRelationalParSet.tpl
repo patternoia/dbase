@@ -3,11 +3,10 @@
 ClassImpT(FairDbRelationalParSet,T)
 
 template<typename T>
-FairDbRelationalParSet<T>::FairDbRelationalParSet():
-  FairDbGenericParSet<T>(),
+FairDbRelationalParSet<T>::FairDbRelationalParSet()
+  : FairDbGenericParSet<T>(),
   fId(0)
 {
-  this->SetCompId(fId);
 }
 
 template<typename T>
@@ -16,11 +15,28 @@ FairDbRelationalParSet<T>::FairDbRelationalParSet(FairDbDetector::Detector_t det
               const char* name,
               const char* title,
               const char* context,
-              Bool_t ownership):
-  FairDbGenericParSet<T>(detid, dataid, name, title, context, ownership),
+              Bool_t ownership)
+  : FairDbGenericParSet<T>(detid, dataid, name, title, context, ownership),
   fId(0)
 {
-  this->SetCompId(fId);
+}
+
+template<typename T>
+FairDbRelationalParSet<T>::FairDbRelationalParSet(const FairDbRelationalParSet& from)
+  : FairDbGenericParSet<T>(from)
+{
+  fId = from.fId;
+}
+
+template<typename T>
+FairDbRelationalParSet<T>& FairDbRelationalParSet<T>::operator=(const FairDbRelationalParSet& from)
+{
+  if (this == &from) { return *this; }
+
+  FairDbGenericParSet<T>::operator=(from);
+  SetId(from.GetId());
+
+  return *this;
 }
 
 template<typename T>
@@ -40,6 +56,24 @@ TObjArray* FairDbRelationalParSet<T>::GetByIds(Int_t* ids, UInt_t count, UInt_t 
   if (!ids)
     return NULL;
 
+  return T::GetBy(
+    [&ids, &count](T *inst) -> bool
+      {
+        for (Int_t i=0; i < count; i++)
+        {
+          if (ids[i] == inst->GetId())
+          {
+            return true;
+          }
+        }
+        return false;
+      });
+}
+
+template<typename T>
+TObjArray* FairDbRelationalParSet<T>::GetByIds(std::vector<Int_t> ids, UInt_t rid)
+{
+  Int_t count = ids.size();
   return T::GetBy(
     [&ids, &count](T *inst) -> bool
       {

@@ -1,5 +1,7 @@
 #include "FairDbCbmStsREST.h"
 
+#include "FairParTSQLIo.h"
+
 #include <WServer>
 #include <iostream>
 
@@ -12,6 +14,9 @@ int main(int argc, char **argv)
 {
   // gProgName is not initialized when running wt; makes FairDbLogEntry to hang
   gSystem->SetProgname(argv[0]);
+  FairParTSQLIo *sql_io = new FairParTSQLIo();
+  sql_io->open();
+
   try {
     Wt::WServer server(argc, argv, WTHTTP_CONFIGURATION);
 

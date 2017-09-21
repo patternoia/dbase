@@ -2,7 +2,7 @@
 * @file StsSensorBatch.cxx
 * @brief Sts Sensor Batch Entity FairDb class. Generated automatically
 * @author Generator by Evgeny Lavrik <evgeny.lavrik@uni-tuebingen.de>
-* @date 20.9.2017
+* @date 21.9.2017
 **/
 
 #include "StsSensorBatch.h"
@@ -38,6 +38,28 @@ StsSensorBatch::StsSensorBatch(FairDbDetector::Detector_t detid,
 {
 }
 
+StsSensorBatch::StsSensorBatch(const StsSensorBatch& from)
+  :FairDbRelationalParSet<StsSensorBatch>(from)
+{
+  fSensors = from.fSensors;
+  fNumber = from.fNumber;
+  fDate = from.fDate;
+  fComment = from.fComment;
+}
+
+StsSensorBatch& StsSensorBatch::operator=(const StsSensorBatch& from)
+{
+  if (this == &from) { return *this; }
+
+  FairDbRelationalParSet<StsSensorBatch>::operator=(from);
+
+  SetNumber(from.GetNumber());
+  SetDate(from.GetDate());
+  SetComment(from.GetComment());
+
+  return *this;
+}
+
 StsSensorBatch::~StsSensorBatch()
 {
   delete fSensors;
@@ -66,15 +88,15 @@ string StsSensorBatch::GetTableDefinition(const char* Name)
   string sql("create table ");
   if ( Name ) { sql += Name; }
   else { sql += GetTableName(); }
-  sql += "( SEQNO             INT NOT NULL,";
-  sql += "  ROW_ID            INT NOT NULL,";
+  sql += "( SEQNO INT NOT NULL,";
+  sql += "  ROW_ID INT NOT NULL,";
 
   sql += "  ID INT NOT NULL,";
   sql += "  NUMBER TEXT,";
   sql += "  DATE DATETIME,";
   sql += "  COMMENT TEXT,";
 
-  sql += "  primary key(SEQNO,ROW_ID))";
+  sql += "  primary key(SEQNO,ROW_ID,ID) )";
   return sql;
 }
 
@@ -98,34 +120,6 @@ void StsSensorBatch::Store(FairDbOutTableBuffer& res_out,
   res_out << fComment;
 }
 
-StsSensorBatch::StsSensorBatch(const StsSensorBatch& from){
-  SetCompId(from.GetCompId());
-
-  SetId(from.GetId());
-  SetNumber(from.GetNumber());
-  SetDate(from.GetDate());
-  SetComment(from.GetComment());
-}
-
-StsSensorBatch& StsSensorBatch::operator=(const StsSensorBatch& from){
-  SetCompId(from.GetCompId());
-
-  SetId(from.GetId());
-  SetNumber(from.GetNumber());
-  SetDate(from.GetDate());
-  SetComment(from.GetComment());
-
-  return *this;
-}
-
-TObjArray* StsSensorBatch::GetByNumber(string Number, UInt_t rid)
-{
-  return StsSensorBatch::GetBy(
-    [&Number](StsSensorBatch *inst) -> bool
-      {
-        return Number == inst->GetNumber();
-      });
-}
 
 void StsSensorBatch::FillFromJson(Json::Value json)
 {

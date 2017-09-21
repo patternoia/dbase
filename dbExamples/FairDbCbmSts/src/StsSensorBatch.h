@@ -2,25 +2,18 @@
 * @file StsSensorBatch.h
 * @brief Sts Sensor Batch Entity FairDb class. Generated automatically
 * @author Generator by Evgeny Lavrik <evgeny.lavrik@uni-tuebingen.de>
-* @date 20.9.2017
+* @date 21.9.2017
 **/
 
 #ifndef STSSENSORBATCH_H
 #define STSSENSORBATCH_H
 
-
-#include "DataType.h"
 #include "FairDbRelationalParSet.h"
-#include "TString.h"
-#include "TObjArray.h"
-#include "Rtypes.h"
 
 #ifndef __CINT__
 #include "json/json.h"
 #endif
 
-#include <iostream>
-#include <string>
 
 class StsSensor;
 
@@ -36,9 +29,9 @@ class StsSensorBatch : public FairDbRelationalParSet<StsSensorBatch>
           const char* context = "StsSensorDefaultContext",
           Bool_t ownership=kTRUE);
 
-    virtual ~StsSensorBatch(void);
     StsSensorBatch(const StsSensorBatch& from);
     StsSensorBatch& operator=(const StsSensorBatch& from);
+    virtual ~StsSensorBatch(void);
 
     // Dump Object
     void   Print();
@@ -67,7 +60,6 @@ class StsSensorBatch : public FairDbRelationalParSet<StsSensorBatch>
     void SetDate(ValTimeStamp value) { fDate = value; }
     void SetComment(string value) { fComment = value; }
 
-    static TObjArray* GetByNumber(string Number, UInt_t rid=0);
 
 #ifndef __CINT__
     virtual void FillFromJson(Json::Value json);
@@ -77,7 +69,6 @@ class StsSensorBatch : public FairDbRelationalParSet<StsSensorBatch>
   private:
     TObjArray* fSensors; //! transient relation to StsSensor, Has Many
 
-    Int_t fId;
     string fNumber;
     ValTimeStamp fDate;
     string fComment;

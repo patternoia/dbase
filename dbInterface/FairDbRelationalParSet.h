@@ -1,27 +1,21 @@
 #ifndef FAIRDBRELATIONALPARSET_H
 #define FAIRDBRELATIONALPARSET_H
 
-
-#include "DataType.h"
 #include "FairDbGenericParSet.h"
-#include "TString.h"
-#include "TObjArray.h"
-#include "Rtypes.h"
 
 #ifndef __CINT__
 #include "json/json.h"
 #endif
-
-#include <iostream>
-#include <string>
 
 template <typename T>
 class FairDbRelationalParSet : public FairDbGenericParSet<T>
 {
   public :
     FairDbRelationalParSet();
-    FairDbRelationalParSet(FairDbDetector::Detector_t detid, DataType::DataType_t dataid, 
+    FairDbRelationalParSet(FairDbDetector::Detector_t detid, DataType::DataType_t dataid,
                         const char* name, const char* title, const char* context, Bool_t ownership=kFALSE);
+    FairDbRelationalParSet(const FairDbRelationalParSet& from);
+    FairDbRelationalParSet& operator=(const FairDbRelationalParSet&);
 
     virtual ~FairDbRelationalParSet(void);
 
@@ -32,8 +26,9 @@ class FairDbRelationalParSet : public FairDbGenericParSet<T>
 
     static T* GetById(Int_t id, UInt_t rid=0);
     static TObjArray* GetByIds(Int_t* ids, UInt_t count, UInt_t rid=0);
+    static TObjArray* GetByIds(std::vector<Int_t> ids, UInt_t rid=0);
 
-#ifndef __CINT__   
+#ifndef __CINT__
     static T* FromJsonString(string jsonString);
     static T* FromJson(Json::Value json);
     static TObjArray* FromJsonArray(Json::Value jsonArray);

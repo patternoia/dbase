@@ -2,26 +2,19 @@
 * @file StsSensor.h
 * @brief Sts Sensor Entity FairDb class. Generated automatically
 * @author Generator by Evgeny Lavrik <evgeny.lavrik@uni-tuebingen.de>
-* @date 20.9.2017
+* @date 21.9.2017
 **/
 
 #ifndef STSSENSOR_H
 #define STSSENSOR_H
 
-#include "TBits.h"
-
-#include "DataType.h"
 #include "FairDbRelationalParSet.h"
-#include "TString.h"
-#include "TObjArray.h"
-#include "Rtypes.h"
 
 #ifndef __CINT__
 #include "json/json.h"
 #endif
 
-#include <iostream>
-#include <string>
+#include "TBits.h"
 
 class StsSensorBatch;
 
@@ -37,9 +30,9 @@ class StsSensor : public FairDbRelationalParSet<StsSensor>
           const char* context = "StsSensorDefaultContext",
           Bool_t ownership=kTRUE);
 
-    virtual ~StsSensor(void);
     StsSensor(const StsSensor& from);
     StsSensor& operator=(const StsSensor& from);
+    virtual ~StsSensor(void);
 
     // Dump Object
     void   Print();
@@ -71,7 +64,7 @@ class StsSensor : public FairDbRelationalParSet<StsSensor>
     void SetBits(TBits* value) { fBits = value; }
     void SetSUID(string value) { fSUID = value; }
     void SetSize(Int_t value) { fSize = value; }
-    void SetArray(Double_t* value) { if (!fArray) fArray = new Double_t[fSize]; for (Int_t i = 0; i < fSize; i++ ) { fArray[i] = value[i]; } }
+    void SetArray(Double_t* value);
 
     static TObjArray* GetByBatchId(Int_t BatchId, UInt_t rid=0);
     static TObjArray* GetBySUID(string SUID, UInt_t rid=0);
@@ -84,7 +77,6 @@ class StsSensor : public FairDbRelationalParSet<StsSensor>
   private:
     StsSensorBatch* fBatch; //! transient relation to StsSensorBatch, Has One
 
-    Int_t fId;
     Int_t fBatchId;
     TBits* fBits;
     string fSUID;
