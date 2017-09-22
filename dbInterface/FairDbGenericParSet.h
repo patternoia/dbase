@@ -68,7 +68,7 @@ class FairDbGenericParSet : public FairDbParSet
     static TObjArray* GetAll(UInt_t rid=0);
     TObjArray* GetAllVersions();
     virtual void store(UInt_t rid=0);
-    static void StoreArray(TObjArray *array, UInt_t rid=0);
+    static void StoreArray(TObjArray *array, UInt_t rid=0, std::string = "");
 
     // Standard Validity frame definition
     virtual ValCondition GetContext(UInt_t rid) {

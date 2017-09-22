@@ -1,20 +1,20 @@
+/**
+* @file StsSensorBatch.h
+* @brief Sts Sensor Batch Entity FairDb class. Generated automatically
+* @author Generator by Evgeny Lavrik <evgeny.lavrik@uni-tuebingen.de>
+* @date 21.9.2017
+**/
+
 #ifndef STSSENSORBATCH_H
 #define STSSENSORBATCH_H
 
-#include "DataType.h"
 #include "FairDbRelationalParSet.h"
-#include "TString.h"
-#include "TObjArray.h"
-#include "Rtypes.h"
 
 #ifndef __CINT__
 #include "json/json.h"
 #endif
 
-#include <iostream>
-#include <string>
 
-using namespace std;
 class StsSensor;
 
 class StsSensorBatch : public FairDbRelationalParSet<StsSensorBatch>
@@ -29,9 +29,9 @@ class StsSensorBatch : public FairDbRelationalParSet<StsSensorBatch>
           const char* context = "StsSensorDefaultContext",
           Bool_t ownership=kTRUE);
 
-    virtual ~StsSensorBatch(void);
     StsSensorBatch(const StsSensorBatch& from);
     StsSensorBatch& operator=(const StsSensorBatch& from);
+    virtual ~StsSensorBatch(void);
 
     // Dump Object
     void   Print();
@@ -45,23 +45,27 @@ class StsSensorBatch : public FairDbRelationalParSet<StsSensorBatch>
     virtual void Store(FairDbOutTableBuffer& res_out,
                        const FairDbValRecord* valrec) const;
 
-    const TObjArray* GetSensors();
+    UInt_t GetIndex(UInt_t /*def*/) const { return fId; }
 
-    static TObjArray* GetByNumber(string Number, UInt_t rid=0);
+    TObjArray* GetSensors();
 
+
+    Int_t GetId() const { return fId; }
     string GetNumber() const { return fNumber; }
     ValTimeStamp GetDate() const { return fDate; }
     string GetComment() const { return fComment; }
 
+    void SetId(Int_t value) { fId = value; SetCompId(fId); }
     void SetNumber(string value) { fNumber = value; }
     void SetDate(ValTimeStamp value) { fDate = value; }
     void SetComment(string value) { fComment = value; }
 
+
 #ifndef __CINT__
-    virtual void FillFromJson(Json::Value& json);
+    virtual void FillFromJson(Json::Value json);
     virtual void StoreToJson(Json::Value& json);
 #endif
-    
+
   private:
     TObjArray* fSensors; //! transient relation to StsSensor, Has Many
 
@@ -73,3 +77,4 @@ class StsSensorBatch : public FairDbRelationalParSet<StsSensorBatch>
 };
 
 #endif /* !STSSENSORBATCH_H */
+
