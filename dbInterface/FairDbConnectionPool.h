@@ -80,21 +80,6 @@ class FairDbConnectionPool
     void SetAuthorisingEntry(Int_t entry) {fGlobalSeqNoDbNo = entry;}
     Int_t GetAuthorisingEntry() {return fGlobalSeqNoDbNo;}
 
-  protected:
-
-  private:
-
-    Int_t ReserveNextSeqNo(const std::string& tableName,
-                           Bool_t isGlobal,
-                           UInt_t dbNo) const;
-
-
-    Int_t fGlobalSeqNoDbNo;
-    std::vector<FairDbConnection*> fConnections;
-    std::map<std::string,Int_t> fTemporaryTables;
-
-
-
     class BLock
     {
 
@@ -118,7 +103,18 @@ class FairDbConnectionPool
 
     };
 
+  protected:
 
+  private:
+
+    Int_t ReserveNextSeqNo(const std::string& tableName,
+                           Bool_t isGlobal,
+                           UInt_t dbNo) const;
+
+
+    Int_t fGlobalSeqNoDbNo;
+    std::vector<FairDbConnection*> fConnections;
+    std::map<std::string,Int_t> fTemporaryTables;
 
     ClassDef(FairDbConnectionPool,0)     // A priority list of Db connections
 
