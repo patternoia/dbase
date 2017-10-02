@@ -1,11 +1,17 @@
 #include "FairDbRelationalParSet.h"
 
+#include "TSQLStatement.h"
+#include "FairDbConnectionPool.h"
+#include "FairDbString.h"
+#include "FairDbCache.h"
+#include "FairDbTableInterface.h"
+
 ClassImpT(FairDbRelationalParSet,T)
 
 template<typename T>
 FairDbRelationalParSet<T>::FairDbRelationalParSet()
   : FairDbGenericParSet<T>(),
-  fId(0)
+  fId(-1)
 {
 }
 
@@ -17,7 +23,7 @@ FairDbRelationalParSet<T>::FairDbRelationalParSet(FairDbDetector::Detector_t det
               const char* context,
               Bool_t ownership)
   : FairDbGenericParSet<T>(detid, dataid, name, title, context, ownership),
-  fId(0)
+  fId(-1)
 {
 }
 
@@ -42,6 +48,65 @@ FairDbRelationalParSet<T>& FairDbRelationalParSet<T>::operator=(const FairDbRela
 template<typename T>
 FairDbRelationalParSet<T>::~FairDbRelationalParSet()
 {
+}
+
+template<typename T>
+void FairDbRelationalParSet<T>::store(UInt_t rid)
+{
+  if (fId == -1)
+  {
+    SetId(AllocateNextId());
+  }
+
+  FairDbGenericParSet<T>::store(rid);
+}
+
+template<typename T>
+void FairDbRelationalParSet<T>::PurgeCache()
+{
+  FairDbCache *cache = (FairDbCache*)
+    (const_cast<FairDbTableInterface&> (FairDbReader<T>::GetTableInterface()).GetCache());
+  if (cache) {
+    cache->Purge();
+  }
+}
+
+template<typename T>
+Int_t FairDbRelationalParSet<T>::AllocateNextId()
+{
+  FairDbString sql;
+
+  // needs to be uppercase
+  string tableName = this->GetTableName();
+
+  bool tableExists = this->fMultConn->TableExists(tableName, this->fDbEntry);
+  if ( ! tableExists ) { return 0; }
+  auto_ptr<FairDbStatement> stmtDb(this->fMultConn->CreateStatement(this->fDbEntry) );
+  if ( ! stmtDb.get() ) { return 0; }
+
+  FairDbConnectionPool::BLock Block(this->fMultConn->CreateStatement(this->fDbEntry), tableName, tableName);
+  if ( ! Block.IsBLocked() ) {
+    DBLOG("FairDb",FairDbLog::kInfo)<< "Unable to lock " << tableName << endl;
+    return 0;
+  }
+  sql.Clear();
+
+  sql << "SELECT ID FROM " << tableName << " ORDER BY ID DESC LIMIT 1";
+  DBLOG("FairDb",FairDbLog::kInfo) << " tableName: " << tableName << " query: " << sql.c_str() << endl;
+  TSQLStatement* stmt = stmtDb->ExecuteQuery(sql.c_str());
+  stmtDb->PrintExceptions(FairDbLog::kInfo);
+  Int_t id = 0;
+  if ( stmt && stmt->NextResultRow() ) {
+    id = stmt->GetInt(0) + 1;
+  } else {
+    DBLOG("FairDb",FairDbLog::kInfo)<< "Unable to find default SeqNo"
+                                     << " due to above error" << endl;
+  }
+
+  delete stmt;
+  stmt = 0;
+  DBLOG("FairDb",FairDbLog::kInfo)<< "query returned last generated seqno: " << id << endl;
+  return id;
 }
 
 template<typename T>
