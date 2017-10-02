@@ -255,9 +255,11 @@ TObjArray* FairDbGenericParSet<T>::GetAllVersions()
 
   TObjArray *result = new TObjArray();
   while ( stmtTSQL->NextResultRow() ) {
-    T* instance = new T();
-    instance->fill(FairDb::MakeTimeStamp(stmtTSQL->GetString(1)));
-    result->Add(instance);
+    T* instance = GetByIndex(GetCompId(), FairDb::MakeTimeStamp(stmtTSQL->GetString(1)));
+    if (instance)
+    {
+      result->Add(instance);
+    }
   }
 
   delete stmtTSQL;
