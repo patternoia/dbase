@@ -19,8 +19,10 @@ class FairDbRelationalParSet : public FairDbGenericParSet<T>
 
     virtual ~FairDbRelationalParSet(void);
 
-    UInt_t GetIndex(UInt_t /*def*/) const { return fId; }
-    
+    static void PurgeCache();
+
+    virtual void store(UInt_t rid=0);
+
     Int_t GetId() const { return fId; }
     void SetId(Int_t value) { fId = value; this->SetCompId(fId); }
 
@@ -39,11 +41,13 @@ class FairDbRelationalParSet : public FairDbGenericParSet<T>
     virtual void FillFromJson(Json::Value json) { ; }
     virtual void StoreToJson(Json::Value& json) { ; }
 #endif
-    
+
   protected:
     Int_t fId;
 
   private:
+    Int_t AllocateNextId();
+
     ClassDefT(FairDbRelationalParSet<T>,0); // ROOT template class definition
 };
 ClassDefT2(FairDbRelationalParSet,T)
