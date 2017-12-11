@@ -117,4 +117,16 @@
 //#pragma link off class FairDbParRegistry;
 //#pragma link off class FairDbParFactory;
 
+#pragma link C++ class FairDbReader<FairDbUser>+;
+#pragma link C++ class FairDbWriter<FairDbUser>+;
+#pragma link C++ class FairDbGenericParSet<FairDbUser>+;
+#pragma link C++ class FairDbRelationalParSet<FairDbUser>+;
+#pragma link C++ class FairDbUser+;
+
+#pragma link C++ class FairDbReader<FairDbUserAuthToken>+;
+#pragma link C++ class FairDbWriter<FairDbUserAuthToken>+;
+#pragma link C++ class FairDbGenericParSet<FairDbUserAuthToken>+;
+#pragma link C++ class FairDbRelationalParSet<FairDbUserAuthToken>+;
+#pragma link C++ class FairDbUserAuthToken+;
+
 #endif

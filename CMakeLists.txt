@@ -100,6 +100,8 @@ dbInterface/FairDbStreamer.cxx
 dbInterface/FairDbParSet.cxx
 dbInterface/FairDbParFactory.cxx
 dbInterface/FairDbUtilType.cxx
+dbInterface/FairDbUser.cxx
+dbInterface/FairDbUserAuthToken.cxx
 dbUtils/FairDbLog.cxx
 dbUtils/FairDbLogFormat.cxx
 dbUtils/FairDbLogOSStream.cxx
@@ -123,6 +125,9 @@ install(FILES "dbInput/prepare_db.sql" DESTINATION share/dbInput)
 
 ### 3rdParty
 install(DIRECTORY "db3rdParty/jsoncpp/json" DESTINATION include)
+
+### cmake modules
+install(FILES "cmake/modules/FindWt.cmake" DESTINATION share/fairbase/cmake/modules)
 
 CHANGE_FILE_EXTENSION(*.cxx *.h HEADERS "${SRCS}")
 set(HEADERS ${HEADERS} ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbReader.h ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbWriter.h

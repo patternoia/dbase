@@ -15,6 +15,7 @@ ${BASE_INCLUDE_DIRECTORIES}
 ${ROOT_INCLUDE_DIR}
 ${ZMQ_INCLUDE_DIR}
 ${CMAKE_SOURCE_DIR}/parbase
+${Boost_INCLUDE_DIRS}
 ${Wt_INCLUDE_DIR}
 ${Wt_INCLUDE_DIR}/Wt
 ${CMAKE_SOURCE_DIR}/dbase/dbWt
@@ -71,7 +72,16 @@ graphics/FairDbWtCanvasWidget.cxx
 graphics/FairDbWtRtopFrame.cxx
 auth/model/User.C
 auth/model/Session.C
+
+REST/FairDbWtUserSessionStore.cxx
+REST/FairDbWtBaseResource.cxx
+REST/FairDbWtAuthResource.cxx
+REST/FairDbWtUserResource.cxx
+REST/FairDbWtAdminResource.cxx
 )
+
+install(FILES "REST/FairDbWtGenericResource.h" DESTINATION include)
+install(FILES "REST/FairDbWtGenericResource.tpl" DESTINATION include)
 
 set(LIBRARY_NAME FairDbWt)
 
