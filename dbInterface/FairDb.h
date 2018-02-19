@@ -99,6 +99,8 @@ TString StreamAsString(const Float_t* arr, Int_t size);
 TString StreamAsString(const Double_t* arr, Int_t size);
 TString StreamAsString(const TObject* obj, Int_t& size);
 
+TString StreamAsString(const void* anyObject, std::string signature);
+
 // Logging System
 void SetLogLevel(Int_t level);
 }

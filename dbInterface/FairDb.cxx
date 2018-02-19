@@ -11,6 +11,7 @@
 
 #include "TBufferFile.h"
 #include "TVirtualStreamerInfo.h"
+#include "TClass.h"
 
 #include "FairUtilStream.h"
 #include "FairDbLogService.h"
@@ -344,4 +345,21 @@ TString FairDb::StreamAsString(const TObject* obj, Int_t& size)
   return str_hex.c_str();
 }
 
+TString FairDb::StreamAsString(const void* anyObject, std::string signature)
+{
+  if (!anyObject)
+  {
+    return "";
+  }
 
+  TBufferFile b_write(TBuffer::kWrite);
+  TClass *cls = TClass(signature.c_str()).GetActualClass(anyObject);
+  cls->Streamer(const_cast<void *>(anyObject), b_write);
+  Char_t* buff =  b_write.Buffer();
+  Int_t   ll   = b_write.Length();
+
+  static std::string astr;
+  Util::BinToHex(buff,ll,astr);
+
+  return astr.c_str();
+}

@@ -34,6 +34,8 @@ class FairDbStreamer : public TObject
     FairDbStreamer(const Float_t* iarr, Int_t size, FairDb::DataTypes type=FairDb::kInt);
     FairDbStreamer(const Double_t* iarr, Int_t size, FairDb::DataTypes type=FairDb::kInt);
 
+    FairDbStreamer(const void* anyObject, std::string signature, FairDb::DataTypes type=FairDb::kBinary);
+
     FairDbStreamer(const FairDbStreamer& from);
     FairDbStreamer& operator=(const FairDbStreamer&);
     virtual ~FairDbStreamer();
@@ -55,6 +57,7 @@ class FairDbStreamer : public TObject
     void Fill(Double_t* arr);
     void Fill(TObject* obj);
 
+    void Fill(void* anyObject, std::string signature);
 
   private:
     TString fString; //!
