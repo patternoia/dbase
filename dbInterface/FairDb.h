@@ -19,6 +19,8 @@
 #include "TString.h"                    // for TString
 
 #include <string>                       // for string
+#include <vector>
+#include <map>
 
 // IWYU pragma: no_include "Rtypes.h"
 
@@ -100,6 +102,27 @@ TString StreamAsString(const Double_t* arr, Int_t size);
 TString StreamAsString(const TObject* obj, Int_t& size);
 
 TString StreamAsString(const void* anyObject, std::string signature);
+
+/// vector<>
+TString StreamAsString(const std::vector<Bool_t> vector);
+TString StreamAsString(const std::vector<Short_t> vector);
+TString StreamAsString(const std::vector<UShort_t> vector);
+TString StreamAsString(const std::vector<Int_t> vector);
+TString StreamAsString(const std::vector<UInt_t> vector);
+TString StreamAsString(const std::vector<Float_t> vector);
+TString StreamAsString(const std::vector<Double_t> vector);
+
+/// vector< vector<> >
+TString StreamAsString(const std::vector< std::vector<Bool_t> > vector);
+TString StreamAsString(const std::vector< std::vector<Short_t> > vector);
+TString StreamAsString(const std::vector< std::vector<UShort_t> > vector);
+TString StreamAsString(const std::vector< std::vector<Int_t> > vector);
+TString StreamAsString(const std::vector< std::vector<UInt_t> > vector);
+TString StreamAsString(const std::vector< std::vector<Float_t> > vector);
+TString StreamAsString(const std::vector< std::vector<Double_t> > vector);
+
+/// map
+TString StreamAsString(const std::map<std::string, TObject> map);
 
 // Logging System
 void SetLogLevel(Int_t level);

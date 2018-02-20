@@ -363,3 +363,81 @@ TString FairDb::StreamAsString(const void* anyObject, std::string signature)
 
   return astr.c_str();
 }
+
+/// vector<>
+TString StreamAsString(const std::vector<Bool_t> vector)
+{
+  return FairDb::StreamAsString(&vector, "std::vector<Bool_t>");
+}
+
+TString StreamAsString(const std::vector<Short_t> vector)
+{
+  return FairDb::StreamAsString(&vector, "std::vector<Short_t>");
+}
+
+TString StreamAsString(const std::vector<UShort_t> vector)
+{
+  return FairDb::StreamAsString(&vector, "std::vector<UShort_t>");
+}
+
+TString StreamAsString(const std::vector<Int_t> vector)
+{
+  return FairDb::StreamAsString(&vector, "std::vector<Int_t>");
+}
+
+TString StreamAsString(const std::vector<UInt_t> vector)
+{
+  return FairDb::StreamAsString(&vector, "std::vector<UInt_t>");
+}
+
+TString StreamAsString(const std::vector<Float_t> vector)
+{
+  return FairDb::StreamAsString(&vector, "std::vector<Float_t>");
+}
+
+TString StreamAsString(const std::vector<Double_t> vector)
+{
+  return FairDb::StreamAsString(&vector, "std::vector<Double_t>");
+}
+
+/// vector< vector<> >
+TString StreamAsString(const std::vector< std::vector<Bool_t> > vector)
+{
+  return FairDb::StreamAsString(&vector, "std::vector< std::vector<Bool_t> >");
+}
+
+TString StreamAsString(const std::vector< std::vector<Short_t> > vector)
+{
+  return FairDb::StreamAsString(&vector, "std::vector< std::vector<Short_t> >");
+}
+
+TString StreamAsString(const std::vector< std::vector<UShort_t> > vector)
+{
+  return FairDb::StreamAsString(&vector, "std::vector< std::vector<UShort_t> >");
+}
+
+TString StreamAsString(const std::vector< std::vector<Int_t> > vector)
+{
+  return FairDb::StreamAsString(&vector, "std::vector< std::vector<Int_t> >");
+}
+
+TString StreamAsString(const std::vector< std::vector<UInt_t> > vector)
+{
+  return FairDb::StreamAsString(&vector, "std::vector< std::vector<UInt_t> >");
+}
+
+TString StreamAsString(const std::vector< std::vector<Float_t> > vector)
+{
+  return FairDb::StreamAsString(&vector, "std::vector< std::vector<Float_t> >");
+}
+
+TString StreamAsString(const std::vector< std::vector<Double_t> > vector)
+{
+  return FairDb::StreamAsString(&vector, "std::vector< std::vector<Double_t> >");
+}
+
+/// map
+TString StreamAsString(const std::map<std::string, TObject> map)
+{
+  return FairDb::StreamAsString(&map, "std::map<std::string, TObject>");
+}
