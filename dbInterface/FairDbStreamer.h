@@ -14,7 +14,8 @@
 #include <stddef.h>                     // for NULL
 #include <cassert>                      // for assert
 #include <string>                       // for string
-
+#include <vector>
+#include <map>
 
 #include "FairDb.h"
 
@@ -25,6 +26,8 @@ class FairDbStreamer : public TObject
 
     // Constructors and destructors.
     FairDbStreamer();
+    FairDbStreamer(TString string);
+    FairDbStreamer(std::string string);
     FairDbStreamer(const TObject* obj,  FairDb::DataTypes type=FairDb::kBinary);
     FairDbStreamer(const Int_t* iarr, Int_t size, FairDb::DataTypes type=FairDb::kInt);
     FairDbStreamer(const UInt_t* iarr, Int_t size, FairDb::DataTypes type=FairDb::kInt);
@@ -33,6 +36,8 @@ class FairDbStreamer : public TObject
     FairDbStreamer(const Bool_t* iarr, Int_t size, FairDb::DataTypes type=FairDb::kInt);
     FairDbStreamer(const Float_t* iarr, Int_t size, FairDb::DataTypes type=FairDb::kInt);
     FairDbStreamer(const Double_t* iarr, Int_t size, FairDb::DataTypes type=FairDb::kInt);
+
+    FairDbStreamer(const void* anyObject, std::string signature, FairDb::DataTypes type=FairDb::kBinary);
 
     FairDbStreamer(const FairDbStreamer& from);
     FairDbStreamer& operator=(const FairDbStreamer&);
@@ -55,6 +60,29 @@ class FairDbStreamer : public TObject
     void Fill(Double_t* arr);
     void Fill(TObject* obj);
 
+
+    void Fill(void* anyObject, std::string signature);
+
+    /// vector<>
+    void Fill(std::vector<Bool_t> &vector);
+    void Fill(std::vector<Short_t> &vector);
+    void Fill(std::vector<UShort_t> &vector);
+    void Fill(std::vector<Int_t> &vector);
+    void Fill(std::vector<UInt_t> &vector);
+    void Fill(std::vector<Float_t> &vector);
+    void Fill(std::vector<Double_t> &vector);
+
+    /// vector< vector<> >
+    void Fill(std::vector< std::vector<Bool_t> > &vector);
+    void Fill(std::vector< std::vector<Short_t> > &vector);
+    void Fill(std::vector< std::vector<UShort_t> > &vector);
+    void Fill(std::vector< std::vector<Int_t> > &vector);
+    void Fill(std::vector< std::vector<UInt_t> > &vector);
+    void Fill(std::vector< std::vector<Float_t> > &vector);
+    void Fill(std::vector< std::vector<Double_t> > &vector);
+
+    /// map
+    void Fill(std::map<std::string, TObject> &map);
 
   private:
     TString fString; //!

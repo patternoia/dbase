@@ -26,6 +26,22 @@ FairDbStreamer::FairDbStreamer()
 {
 }
 
+FairDbStreamer::FairDbStreamer(TString string)
+  : TObject(),
+    fString(string),
+    fSize(0),
+    fType(FairDb::kInt)
+{
+}
+
+FairDbStreamer::FairDbStreamer(std::string string)
+  : TObject(),
+    fString(string),
+    fSize(0),
+    fType(FairDb::kInt)
+{
+}
+
 FairDbStreamer::FairDbStreamer(const TObject* obj,FairDb::DataTypes type)
   : TObject()
     //    fString(FairDb::StreamAsString(obj,fSize)), 
@@ -130,6 +146,14 @@ FairDbStreamer::FairDbStreamer(const Double_t* iarr, Int_t size, FairDb::DataTyp
 */
 }
 
+FairDbStreamer::FairDbStreamer(const void* anyObject, std::string signature, FairDb::DataTypes type)
+  : TObject(),
+    fString(FairDb::StreamAsString(anyObject, signature)),
+    fSize(),
+    fType(type)
+{
+
+}
 
 
 FairDbStreamer::FairDbStreamer(const FairDbStreamer& from)
@@ -288,4 +312,98 @@ void FairDbStreamer::Fill(TObject* obj)
   Util::BinFromHex(str_hex,read_buf);
   TBufferFile b_read(TBuffer::kRead,halb, read_buf,kFALSE);
   obj->Streamer(b_read);
+}
+
+void FairDbStreamer::Fill(void* anyObject, std::string signature)
+{
+  if (fString.IsNull())
+    return;
+
+  std::string str_hex(fString.Data());
+  size_t halb = str_hex.length()/2;
+  UChar_t read_buf[halb];
+  Util::BinFromHex(str_hex,read_buf);
+  TBufferFile b_read(TBuffer::kRead,halb, read_buf,kFALSE);
+
+  TClass *cls = TClass(signature.c_str()).GetActualClass(anyObject);
+  cls->Streamer(anyObject, b_read);
+}
+
+
+/// vector<>
+void FairDbStreamer::Fill(std::vector<Bool_t> &vector)
+{
+  Fill(&vector, "std::vector<Bool_t>");
+}
+
+void FairDbStreamer::Fill(std::vector<Short_t> &vector)
+{
+  Fill(&vector, "std::vector<Short_t>");
+}
+
+void FairDbStreamer::Fill(std::vector<UShort_t> &vector)
+{
+  Fill(&vector, "std::vector<UShort_t>");
+}
+
+void FairDbStreamer::Fill(std::vector<Int_t> &vector)
+{
+  Fill(&vector, "std::vector<Int_t>");
+}
+
+void FairDbStreamer::Fill(std::vector<UInt_t> &vector)
+{
+  Fill(&vector, "std::vector<UInt_t>");
+}
+
+void FairDbStreamer::Fill(std::vector<Float_t> &vector)
+{
+  Fill(&vector, "std::vector<Float_t>");
+}
+
+void FairDbStreamer::Fill(std::vector<Double_t> &vector)
+{
+  Fill(&vector, "std::vector<Double_t>");
+}
+
+/// vector< vector<> >
+void FairDbStreamer::Fill(std::vector< std::vector<Bool_t> > &vector)
+{
+  Fill(&vector, "std::vector< std::vector<Bool_t> >");
+}
+
+void FairDbStreamer::Fill(std::vector< std::vector<Short_t> > &vector)
+{
+  Fill(&vector, "std::vector< std::vector<Short_t> >");
+}
+
+void FairDbStreamer::Fill(std::vector< std::vector<UShort_t> > &vector)
+{
+  Fill(&vector, "std::vector< std::vector<UShort_t> >");
+}
+
+void FairDbStreamer::Fill(std::vector< std::vector<Int_t> > &vector)
+{
+  Fill(&vector, "std::vector< std::vector<Int_t> >");
+}
+
+void FairDbStreamer::Fill(std::vector< std::vector<UInt_t> > &vector)
+{
+  Fill(&vector, "std::vector< std::vector<UInt_t> >");
+}
+
+void FairDbStreamer::Fill(std::vector< std::vector<Float_t> > &vector)
+{
+  Fill(&vector, "std::vector< std::vector<Float_t> >");
+}
+
+void FairDbStreamer::Fill(std::vector< std::vector<Double_t> > &vector)
+{
+  Fill(&vector, "std::vector< std::vector<Double_t> >");
+}
+
+/// map
+void FairDbStreamer::Fill(std::map<std::string, TObject> &map)
+{
+  Fill(&map, "std::map<std::string, TObject>");
 }
