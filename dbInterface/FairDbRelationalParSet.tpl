@@ -175,7 +175,7 @@ std::vector<T> FairDbRelationalParSet<T>::FromJsonArray(Json::Value jsonArray)
   std::vector<T> result;
   result.reserve(jsonArray.size());
 
-  for (Json::Value element : jsonArray)
+  for (const Json::Value& element : jsonArray)
   {
     std::unique_ptr<T> deserialized(std::move(FromJson(element)));
     if (deserialized)
