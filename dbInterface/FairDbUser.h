@@ -55,6 +55,8 @@ class FairDbUser : public FairDbRelationalParSet<FairDbUser>
     // Add-ons: SQL descriptors for the parameter class
     virtual std::string GetTableDefinition(const char* Name = 0);
 
+    virtual bool Validate(const FairDbValRecord* valrec) const;
+
     // Atomic IO (intrinsic)
     virtual void Fill(FairDbResultPool& res_in,
                       const FairDbValRecord* valrec);
@@ -62,8 +64,6 @@ class FairDbUser : public FairDbRelationalParSet<FairDbUser>
                        const FairDbValRecord* valrec) const;
 
     UInt_t GetIndex(UInt_t /*def*/) const { return fId; }
-
-
 
     Int_t GetId() const { return fId; }
     string GetFullName() const { return fFullName; }
