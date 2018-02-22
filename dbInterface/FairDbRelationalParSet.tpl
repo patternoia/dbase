@@ -119,7 +119,7 @@ template<typename T>
 std::vector<T> FairDbRelationalParSet<T>::GetByIds(std::vector<Int_t> ids, UInt_t rid)
 {
   return T::GetBy(
-    [&ids](const T inst) -> bool
+    [&ids](const T& inst) -> bool
       {
         for (Int_t id : ids)
         {
@@ -172,15 +172,15 @@ std::vector<T> FairDbRelationalParSet<T>::FromJsonArray(Json::Value jsonArray)
     return {};
   }
 
-  Int_t count = jsonArray.size();
-  std::vector<T> result(count);
+  std::vector<T> result;
+  result.reserve(jsonArray.size());
 
   for (Json::Value element : jsonArray)
   {
     std::unique_ptr<T> deserialized(std::move(FromJson(element)));
     if (deserialized)
     {
-      result.push_back(*deserialized);
+      result.emplace_back(*deserialized);
     }
   }
 
