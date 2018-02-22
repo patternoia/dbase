@@ -114,6 +114,13 @@ string FairDbUser::GetTableDefinition(const char* Name)
   return sql;
 }
 
+bool FairDbUser::Validate(const FairDbValRecord* valrec) const
+{
+  if (fPasswordHash.empty()) {
+    throw std::invalid_argument("FairDbUser: Will not accept an empty password hash");
+  }
+}
+
 void FairDbUser::Fill(FairDbResultPool& res_in,
                         const FairDbValRecord* valrec)
 {
@@ -131,11 +138,6 @@ void FairDbUser::Fill(FairDbResultPool& res_in,
 void FairDbUser::Store(FairDbOutTableBuffer& res_out,
                          const FairDbValRecord* valrec) const
 {
-  if (fPasswordHash.empty()) {
-    std::cout << "FairDbUser: Will not accept an empty password hash" << std::endl;
-    throw std::runtime_error("FairDbUser: Will not accept an empty password hash");
-  }
-
   res_out << fId;
   res_out << fFullName;
   res_out << fEmail;
