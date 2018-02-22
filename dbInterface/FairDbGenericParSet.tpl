@@ -250,7 +250,7 @@ std::vector<T> FairDbGenericParSet<T>::GetAllVersions()
   TSQLStatement* stmtTSQL = stmtDbn->ExecuteQuery(oss.str());
 
   std::vector<T> result;
-  while ( stmtTSQL->NextResultRow() ) {
+  while ( stmtTSQL && stmtTSQL->NextResultRow() ) {
     std::unique_ptr<T> row = GetByIndex(GetCompId(), FairDb::MakeTimeStamp(stmtTSQL->GetString(1)));
     if (row)
     {
