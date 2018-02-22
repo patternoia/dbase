@@ -31,7 +31,7 @@ template<typename T>
 FairDbRelationalParSet<T>::FairDbRelationalParSet(const FairDbRelationalParSet& from)
   : FairDbGenericParSet<T>(from)
 {
-  fId = from.fId;
+  SetId(from.fId);
 }
 
 template<typename T>
@@ -40,7 +40,7 @@ FairDbRelationalParSet<T>& FairDbRelationalParSet<T>::operator=(const FairDbRela
   if (this == &from) { return *this; }
 
   FairDbGenericParSet<T>::operator=(from);
-  SetId(from.GetId());
+  SetId(from.fId);
 
   return *this;
 }
