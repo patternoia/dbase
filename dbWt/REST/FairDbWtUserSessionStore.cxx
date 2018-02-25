@@ -44,7 +44,7 @@ std::string FairDbWtUserSessionStore::GetToken(std::string email, std::string pa
     return std::string();
   }
 
-  std::string token(FairDbWtPasswordService::HashPassword(std::string()).Salt);
+  std::string token(FairDbWtPasswordService::HashPassword(std::string()).Hash);
   fSessionAuth[token] = user;
 
   return token;
@@ -68,7 +68,7 @@ std::unique_ptr<FairDbUser> FairDbWtUserSessionStore::Login(std::string email, s
     return nullptr;
   }
 
-  std::string token(FairDbWtPasswordService::HashPassword(std::string()).Salt);
+  std::string token(FairDbWtPasswordService::HashPassword(std::string()).Hash);
   user.SetToken(token);
   fSessionAuth[token] = user;
 
