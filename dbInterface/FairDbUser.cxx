@@ -117,8 +117,14 @@ string FairDbUser::GetTableDefinition(const char* Name)
 bool FairDbUser::Validate(const FairDbValRecord* valrec) const
 {
   if (fPasswordHash.empty()) {
-    throw std::invalid_argument("FairDbUser: Will not accept an empty password hash");
+    throw std::invalid_argument("FairDbUser: password hash is empty");
   }
+
+  if (FairDbUser::GetByEmail(fEmail, ValTimeStamp()).size()) {
+    throw std::invalid_argument("FairDbUser: user with this email address is already registered");
+  }
+
+  return true;
 }
 
 void FairDbUser::Fill(FairDbResultPool& res_in,
