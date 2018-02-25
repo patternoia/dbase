@@ -22,8 +22,7 @@ ${Wt_INCLUDE_DIR}/Wt
 ${CMAKE_SOURCE_DIR}/dbase/dbWt
 ${CMAKE_SOURCE_DIR}/dbase/dbWt/treeview
 ${CMAKE_SOURCE_DIR}/dbase/dbWt/graphics
-${CMAKE_SOURCE_DIR}/dbase/dbWt/examples/filetree
-${CMAKE_SOURCE_DIR}/dbase/dbWt/examples/mandelbrot
+${CMAKE_SOURCE_DIR}/dbase/dbWt/auth/model
 ${CMAKE_SOURCE_DIR}/dbase/dbInterface
 ${CMAKE_SOURCE_DIR}/dbase/dbValidation
 ${CMAKE_SOURCE_DIR}/dbase/dbInput
@@ -79,6 +78,7 @@ REST/FairDbWtBaseResource.cxx
 REST/FairDbWtAuthResource.cxx
 REST/FairDbWtUserResource.cxx
 REST/FairDbWtAdminResource.cxx
+REST/FairDbWtPasswordService.cxx
 )
 
 install(FILES "REST/FairDbWtGenericResource.h" DESTINATION include)
@@ -105,8 +105,7 @@ endif (Boost_FOUND)
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
 	set(DEPENDENCIES ${DEPENDENCIES} crypt)
     message(STATUS ">>> --FairDbWt-- Found Linux ---> ${DEPENDENCIES}")
-endif()	
-
+endif()
 
 GENERATE_LIBRARY()
 

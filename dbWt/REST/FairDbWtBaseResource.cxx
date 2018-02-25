@@ -110,7 +110,7 @@ void FairDbWtBaseResource::handleRequest(const Wt::Http::Request& request, Wt::H
 #ifdef REST_SERVER_VERBOSE
     std::cout << "Response Data:\n" << responseData << std::endl;
 #endif
-  } catch (Json::Exception &e) {
+  } catch (std::exception &e) {
     responseData["error"] = e.what();
     response.out() << responseData;
     response.setStatus(400);

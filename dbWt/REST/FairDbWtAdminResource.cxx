@@ -7,9 +7,7 @@
 
 #include "FairDbWtAdminResource.h"
 #include "FairDbWtUserSessionStore.h"
-#include <Wt/Auth/PasswordVerifier>
-#include <Wt/Auth/HashFunction>
-#include <Wt/Auth/PasswordHash>
+#include "FairDbWtPasswordService.h"
 
 FairDbWtAdminResource::FairDbWtAdminResource(Wt::WServer& server, Wt::WObject *parent)
   : FairDbWtBaseResource(server, parent)
@@ -42,13 +40,10 @@ void FairDbWtAdminResource::RegisterUser(const Wt::Http::Request& request, Json:
   std::unique_ptr<FairDbUser> user = FairDbUser::FromJson(userJson);
   user->SetId(-1);
 
-  Wt::Auth::PasswordVerifier *verifier = new Wt::Auth::PasswordVerifier();
-  Wt::Auth::BCryptHashFunction *bcrypt = new Wt::Auth::BCryptHashFunction(7);
-  verifier->addHashFunction(bcrypt);
+  FairDbWtPasswordData passwordData = FairDbWtPasswordService::HashPassword(password);
 
-  Wt::Auth::PasswordHash hash = verifier->hashPassword(password);
-  user->SetPasswordHash(hash.value());
-  user->SetPasswordSalt(hash.salt());
+  user->SetPasswordHash(passwordData.Hash);
+  user->SetPasswordSalt(passwordData.Salt);
   user->store(ValTimeStamp());
   FairDbUser::PurgeCache();
 
@@ -75,13 +70,10 @@ void FairDbWtAdminResource::ChangeUserPassword(const Wt::Http::Request& request,
 
   std::unique_ptr<FairDbUser> user = FairDbUser::GetById(userId, ValTimeStamp());
 
-  Wt::Auth::PasswordVerifier *verifier = new Wt::Auth::PasswordVerifier();
-  Wt::Auth::BCryptHashFunction *bcrypt = new Wt::Auth::BCryptHashFunction(7);
-  verifier->addHashFunction(bcrypt);
+  FairDbWtPasswordData passwordData = FairDbWtPasswordService::HashPassword(password);
 
-  Wt::Auth::PasswordHash hash = verifier->hashPassword(password);
-  user->SetPasswordHash(hash.value());
-  user->SetPasswordSalt(hash.salt());
+  user->SetPasswordHash(passwordData.Hash);
+  user->SetPasswordSalt(passwordData.Salt);
   user->store(ValTimeStamp());
   FairDbUser::PurgeCache();
 }
