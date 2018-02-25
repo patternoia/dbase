@@ -568,6 +568,8 @@ Bool_t FairDbFieldType::IsCompatible(const FairDbFieldType& other) const
   if ( fConcept == concept ) { return kTRUE; }
   if ( MATCHES(FairDb::kBool,  FairDb::kChar)  ) { return kTRUE; }
   if ( MATCHES(FairDb::kBool,  FairDb::kUChar) ) { return kTRUE; }
+  if ( MATCHES(FairDb::kBool,  FairDb::kInt)   ) { return kTRUE; }
+  if ( MATCHES(FairDb::kBool,  FairDb::kUInt)  ) { return kTRUE; }
   if ( MATCHES(FairDb::kInt,   FairDb::kChar)  ) { return kTRUE; }
   if ( MATCHES(FairDb::kUInt,  FairDb::kUChar) ) { return kTRUE; }
   if ( MATCHES(FairDb::kUInt,  FairDb::kInt)   ) { return kTRUE; }
