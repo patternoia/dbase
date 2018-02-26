@@ -26,8 +26,8 @@ class FairDbRelationalParSet : public FairDbGenericParSet<T>
     Int_t GetId() const { return fId; }
     void SetId(Int_t value) { fId = value; this->SetCompId(fId); }
 
-    static std::unique_ptr<T> GetById(Int_t id, UInt_t rid=0);
-    static std::vector<T> GetByIds(std::vector<Int_t> ids, UInt_t rid=0);
+    static std::unique_ptr<T> GetById(Int_t id, UInt_t rid=ValTimeStamp());
+    static std::vector<T> GetByIds(std::vector<Int_t> ids, UInt_t rid=ValTimeStamp());
 
 #ifndef __CINT__
     static std::unique_ptr<T> FromJsonString(std::string jsonString);

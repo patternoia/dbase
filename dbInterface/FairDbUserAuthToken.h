@@ -61,9 +61,9 @@ class FairDbUserAuthToken : public FairDbRelationalParSet<FairDbUserAuthToken>
     void SetToken(string value) { fToken = value; }
     void SetExpirationTime(ValTimeStamp value) { fExpirationTime = value; }
 
-    static std::vector<FairDbUserAuthToken> GetByUserId(Int_t UserId, UInt_t rid=0);
-    static std::vector<FairDbUserAuthToken> GetByToken(string Token, UInt_t rid=0);
-    static std::vector<FairDbUserAuthToken> GetByExpirationTime(ValTimeStamp ExpirationTime, UInt_t rid=0);
+    static std::vector<FairDbUserAuthToken> GetByUserId(Int_t UserId, UInt_t rid=ValTimeStamp());
+    static std::vector<FairDbUserAuthToken> GetByToken(string Token, UInt_t rid=ValTimeStamp());
+    static std::vector<FairDbUserAuthToken> GetByExpirationTime(ValTimeStamp ExpirationTime, UInt_t rid=ValTimeStamp());
 
 #ifndef __CINT__
     virtual void FillFromJson(Json::Value json);
