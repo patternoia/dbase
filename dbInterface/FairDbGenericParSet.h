@@ -27,7 +27,7 @@
 
 #include "TString.h"                   
 #include "Rtypes.h" 
-#include "Riosfwd.h"                    
+#include <iosfwd>                    
 #include <iostream> 
 #include <string>   
 #include <sstream>  

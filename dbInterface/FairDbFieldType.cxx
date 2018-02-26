@@ -7,7 +7,7 @@
  ********************************************************************************/
 #include "FairDbFieldType.h"
 #include "FairDbLogService.h"
-#include "Riosfwd.h"                    // for ostream
+#include <iosfwd>                    // for ostream
 #include "TSQLServer.h"                 // for TSQLServer, etc
 #include "TString.h"                    // for operator==, TString
 
