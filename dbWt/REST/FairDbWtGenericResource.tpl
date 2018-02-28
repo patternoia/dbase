@@ -97,6 +97,7 @@ void FairDbWtGenericResource<T>::Store(const Wt::Http::Request& request, Json::V
     instance->SetLogTitle(logTitle);
     instance->store(rid);
     T::PurgeCache();
+    responseData["data"]["Id"] = instance->GetId();
   } else {
     responseData["error"] = "Object: wrong type, must be json object";
   }
