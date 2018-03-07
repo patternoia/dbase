@@ -135,26 +135,24 @@ std::vector<T> FairDbRelationalParSet<T>::GetByIds(std::vector<Int_t> ids, UInt_
 template<typename T>
 std::unique_ptr<T> FairDbRelationalParSet<T>::FromJsonString(std::string jsonString)
 {
-  Json::Value json;
-  std::string error;
-  Json::CharReaderBuilder readerBuilder;
-  Json::CharReader *reader = readerBuilder.newCharReader();
-  Bool_t result = reader->parse(jsonString.data(), jsonString.data() + jsonString.size(), &json, &error);
-  if (!result)
+  try
   {
-    cout << "FairDbRelationalParSet<T>::FromJsonString" << endl;
-    cout << error << endl;
+    jsoncons::strict_parse_error_handler errorHandler;
+    jsoncons::json json = jsoncons::json::parse(jsonString, errorHandler);
+    return FromJson(json);
+  }
+  catch (const jsoncons::parse_error& e)
+  {
+    std::cout << "FairDbRelationalParSet<T>::FromJsonString" << std::endl;
+    std::cout << e.what() << std::endl;
     return nullptr;
   }
-  delete reader;
-
-  return FromJson(json);
 }
 
 template<typename T>
-std::unique_ptr<T> FairDbRelationalParSet<T>::FromJson(Json::Value json)
+std::unique_ptr<T> FairDbRelationalParSet<T>::FromJson(jsoncons::json json)
 {
-  if (!json.isObject())
+  if (!json.is_object())
   {
     return nullptr;
   }
@@ -165,9 +163,9 @@ std::unique_ptr<T> FairDbRelationalParSet<T>::FromJson(Json::Value json)
 }
 
 template<typename T>
-std::vector<T> FairDbRelationalParSet<T>::FromJsonArray(Json::Value jsonArray)
+std::vector<T> FairDbRelationalParSet<T>::FromJsonArray(jsoncons::json jsonArray)
 {
-  if (!jsonArray.isArray())
+  if (!jsonArray.is_array())
   {
     return {};
   }
@@ -175,7 +173,7 @@ std::vector<T> FairDbRelationalParSet<T>::FromJsonArray(Json::Value jsonArray)
   std::vector<T> result;
   result.reserve(jsonArray.size());
 
-  for (const Json::Value& element : jsonArray)
+  for (const jsoncons::json& element : jsonArray.array_range())
   {
     std::unique_ptr<T> deserialized(std::move(FromJson(element)));
     if (deserialized)
@@ -190,19 +188,15 @@ std::vector<T> FairDbRelationalParSet<T>::FromJsonArray(Json::Value jsonArray)
 template<typename T>
 std::string FairDbRelationalParSet<T>::ToJsonString()
 {
-  ostringstream stream;
-  Json::StreamWriterBuilder writerBuilder;
-  Json::StreamWriter *writer = writerBuilder.newStreamWriter();
-
-  writer->write(ToJson(), &stream);
-  delete writer;
-  return stream.str();
+  std::ostringstream s;
+  s << jsoncons::pretty_print(ToJson());
+  return s.str();
 }
 
 template<typename T>
-Json::Value FairDbRelationalParSet<T>::ToJson()
+jsoncons::json FairDbRelationalParSet<T>::ToJson()
 {
-  Json::Value result;
+  jsoncons::json result;
 
   StoreToJson(result);
 
@@ -210,9 +204,9 @@ Json::Value FairDbRelationalParSet<T>::ToJson()
 }
 
 template<typename T>
-Json::Value FairDbRelationalParSet<T>::ToJsonArray(std::vector<T> array)
+jsoncons::json FairDbRelationalParSet<T>::ToJsonArray(std::vector<T> array)
 {
-  Json::Value jsonArray(Json::arrayValue);
+  jsoncons::json jsonArray = jsoncons::json::array();
 
   Int_t count = array.size();
   jsonArray.resize(count);

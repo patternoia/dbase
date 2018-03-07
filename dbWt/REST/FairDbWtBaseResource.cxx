@@ -69,10 +69,10 @@ void FairDbWtBaseResource::handleRequest(const Wt::Http::Request& request, Wt::H
     return;
   }
 
-  Json::Value requestData;
-  Json::Value responseData;
-  responseData["data"] = Json::Value(Json::nullValue);
-  responseData["error"] = Json::Value(Json::nullValue);
+  jsoncons::json requestData;
+  jsoncons::json responseData;
+  responseData["data"] = jsoncons::json::null();
+  responseData["error"] = jsoncons::json::null();
 
   try
   {
