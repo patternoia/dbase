@@ -74,38 +74,38 @@ void FairDbRelationalParSet<T>::PurgeCache()
 template<typename T>
 Int_t FairDbRelationalParSet<T>::AllocateNextId()
 {
-  FairDbString sql;
-
   // needs to be uppercase
   std::string tableName = this->GetTableName();
-
   bool tableExists = this->fMultConn->TableExists(tableName, this->fDbEntry);
-  if ( ! tableExists ) { return 0; }
-  auto_ptr<FairDbStatement> stmtDb(this->fMultConn->CreateStatement(this->fDbEntry) );
-  if ( ! stmtDb.get() ) { return 0; }
+  if (!tableExists) {
+    return -1;
+  }
+
+  std::unique_ptr<FairDbStatement> statement(this->fMultConn->CreateStatement(this->fDbEntry));
+  if (!statement) {
+    return -1;
+  }
 
   FairDbConnectionPool::BLock Block(this->fMultConn->CreateStatement(this->fDbEntry), tableName, tableName);
   if ( ! Block.IsBLocked() ) {
-    DBLOG("FairDb",FairDbLog::kInfo)<< "Unable to lock " << tableName << endl;
-    return 0;
+    DBLOG("FairDb",FairDbLog::kInfo)<< "FairDbRelationalParSet<T>::AllocateNextId Unable to lock " << tableName << endl;
+    return -1;
   }
-  sql.Clear();
 
+  FairDbString sql;
   sql << "SELECT ID FROM " << tableName << " ORDER BY ID DESC LIMIT 1";
-  DBLOG("FairDb",FairDbLog::kInfo) << " tableName: " << tableName << " query: " << sql.c_str() << endl;
-  TSQLStatement* stmt = stmtDb->ExecuteQuery(sql.c_str());
-  stmtDb->PrintExceptions(FairDbLog::kInfo);
-  Int_t id = 0;
+  std::unique_ptr<TSQLStatement> stmt = statement->ExecuteQuery(sql.c_str());
+  statement->PrintExceptions(FairDbLog::kInfo);
+  Int_t id = -1;
   if ( stmt && stmt->NextResultRow() ) {
     id = stmt->GetInt(0) + 1;
   } else {
-    DBLOG("FairDb",FairDbLog::kInfo)<< "Unable to find default SeqNo"
-                                     << " due to above error" << endl;
+    DBLOG("FairDb", FairDbLog::kInfo)
+      << "FairDbRelationalParSet<T>::AllocateNextId"
+      << " Unable to allocate the next Id"
+      << " due to above error" << endl;
   }
 
-  delete stmt;
-  stmt = 0;
-  DBLOG("FairDb",FairDbLog::kInfo)<< "query returned last generated seqno: " << id << endl;
   return id;
 }
 
