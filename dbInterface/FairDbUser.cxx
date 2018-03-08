@@ -199,17 +199,17 @@ std::vector<FairDbUser> FairDbUser::GetByRole(Int_t Role, UInt_t rid)
       }, rid);
 }
 
-void FairDbUser::FillFromJson(Json::Value json)
+void FairDbUser::FillFromJson(jsoncons::json json)
 {
-  SetId(json["Id"].asInt());
-  SetFullName(json["FullName"].asString());
-  SetEmail(json["Email"].asString());
-  SetAddress(json["Address"].asString());
-  SetStatus(json["Status"].asInt());
-  SetRole(json["Role"].asInt());
+  SetId(json["Id"].as<Int_t>());
+  SetFullName(json["FullName"].as<std::string>());
+  SetEmail(json["Email"].as<std::string>());
+  SetAddress(json["Address"].as<std::string>());
+  SetStatus(json["Status"].as<Int_t>());
+  SetRole(json["Role"].as<Int_t>());
 }
 
-void FairDbUser::StoreToJson(Json::Value& json)
+void FairDbUser::StoreToJson(jsoncons::json& json)
 {
   json["Id"] = fId;
   json["FullName"] = fFullName;

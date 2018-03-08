@@ -31,7 +31,7 @@ Set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/parbase
 
   ### 3rdParty
-  ${CMAKE_SOURCE_DIR}/dbase/db3rdParty/jsoncpp/
+  ${CMAKE_SOURCE_DIR}/dbase/db3rdParty/
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
@@ -49,7 +49,7 @@ Set(LINK_DIRECTORIES
 Link_Directories(${LINK_DIRECTORIES})
 
 
-# ----- FairDb Code 
+# ----- FairDb Code
 set(SRCS
 dbValidation/Experiment.cxx
 dbValidation/FairDbDetector.cxx
@@ -58,7 +58,7 @@ dbValidation/ValCondition.cxx
 dbValidation/ValInterval.cxx
 dbValidation/ValTimeStamp.cxx
 dbInterface/FairDb.cxx
-dbInterface/FairDbConnection.cxx 
+dbInterface/FairDbConnection.cxx
 dbInterface/FairDbBufferFile.cxx
 dbInterface/FairDbCache.cxx
 dbInterface/FairDbConfig.cxx
@@ -78,8 +78,8 @@ dbInterface/FairDbString.cxx
 dbInterface/FairDbTableInterface.cxx
 dbInterface/FairDbTableInterfaceStore.cxx
 dbInterface/FairDbObjTableMap.cxx
-dbInterface/FairDbStopWatch.cxx 
-dbInterface/FairDbStopWatchManager.cxx  
+dbInterface/FairDbStopWatch.cxx
+dbInterface/FairDbStopWatchManager.cxx
 dbInterface/FairDbValRecord.cxx
 dbInterface/FairDbValRecordFactory.cxx
 dbInterface/FairRegistry.cxx
@@ -101,7 +101,6 @@ dbInterface/FairDbParSet.cxx
 dbInterface/FairDbParFactory.cxx
 dbInterface/FairDbUtilType.cxx
 dbInterface/FairDbUser.cxx
-dbInterface/FairDbUserAuthToken.cxx
 dbUtils/FairDbLog.cxx
 dbUtils/FairDbLogFormat.cxx
 dbUtils/FairDbLogOSStream.cxx
@@ -109,7 +108,7 @@ dbUtils/FairDbLogService.cxx
 dbUtils/FairDbLogStat.cxx
 dbUtils/FairDbLogStream.cxx
 dbUtils/FairDbLogUtil.cxx
-### FairDb IO 
+### FairDb IO
 dbIO/FairParTSQLIo.cxx
 dbIO/FairDetParTSQLIo.cxx
 dbIO/FairGenericParTSQLIo.cxx
@@ -124,7 +123,8 @@ install(FILES "dbInput/db_detector_def.h" DESTINATION include)
 install(FILES "dbInput/prepare_db.sql" DESTINATION share/dbInput)
 
 ### 3rdParty
-install(DIRECTORY "db3rdParty/jsoncpp/json" DESTINATION include)
+install(DIRECTORY "db3rdParty/jsoncons" DESTINATION include)
+install(DIRECTORY "db3rdParty/jsoncons_ext" DESTINATION include)
 
 ### cmake modules
 install(FILES "cmake/modules/FindWt.cmake" DESTINATION share/fairbase/cmake/modules)
@@ -132,7 +132,6 @@ install(FILES "cmake/modules/FindWt.cmake" DESTINATION share/fairbase/cmake/modu
 CHANGE_FILE_EXTENSION(*.cxx *.h HEADERS "${SRCS}")
 set(HEADERS ${HEADERS} ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbReader.h ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbWriter.h
   ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbGenericParSet.h ${CMAKE_SOURCE_DIR}/dbase/dbInterface/FairDbRelationalParSet.h)
-set(SRCS ${SRCS} db3rdParty/jsoncpp/jsoncpp.cpp)
 
 set(LINKDEF FairDBLinkDef.h)
 set(LIBRARY_NAME FairDB)

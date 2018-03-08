@@ -10,9 +10,7 @@
 
 #include "FairDbRelationalParSet.h"
 
-#ifndef __CINT__
-#include "json/json.h"
-#endif
+#include <jsoncons/json.hpp>
 
 namespace FairDbUserRole
 {
@@ -91,10 +89,8 @@ class FairDbUser : public FairDbRelationalParSet<FairDbUser>
     static std::vector<FairDbUser> GetByStatus(Int_t Status, UInt_t rid=ValTimeStamp());
     static std::vector<FairDbUser> GetByRole(Int_t Role, UInt_t rid=ValTimeStamp());
 
-#ifndef __CINT__
-    virtual void FillFromJson(Json::Value json);
-    virtual void StoreToJson(Json::Value& json);
-#endif
+    virtual void FillFromJson(jsoncons::json json);
+    virtual void StoreToJson(jsoncons::json& json);
 
   private:
 

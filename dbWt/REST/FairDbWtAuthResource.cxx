@@ -16,10 +16,10 @@ FairDbWtAuthResource::FairDbWtAuthResource(Wt::WServer& server, Wt::WObject *par
   AddEndpoint("/Auth/Login", FairDbUserRole::kUnknown, boost::bind(&FairDbWtAuthResource::Login, this, _1, _2, _3, _4));
 }
 
-void FairDbWtAuthResource::Login(const Wt::Http::Request& request, Json::Value requestData, Wt::Http::Response& response, Json::Value &responseData)
+void FairDbWtAuthResource::Login(const Wt::Http::Request& request, jsoncons::json requestData, Wt::Http::Response& response, jsoncons::json &responseData)
 {
-  std::string email = requestData.get("email", "").asString();
-  std::string password = requestData.get("password", "").asString();
+  std::string email = requestData.get_with_default("email", std::string());
+  std::string password = requestData.get_with_default("password", std::string());
 
   std::unique_ptr<FairDbUser> user = FairDbWtUserSessionStore::Instance()->Login(email, password);
 
