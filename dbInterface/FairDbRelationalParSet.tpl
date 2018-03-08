@@ -94,7 +94,7 @@ Int_t FairDbRelationalParSet<T>::AllocateNextId()
 
   FairDbString sql;
   sql << "SELECT ID FROM " << tableName << " ORDER BY ID DESC LIMIT 1";
-  std::unique_ptr<TSQLStatement> stmt = statement->ExecuteQuery(sql.c_str());
+  std::unique_ptr<TSQLStatement> stmt(statement->ExecuteQuery(sql.c_str()));
   statement->PrintExceptions(FairDbLog::kInfo);
   Int_t id = -1;
   if ( stmt && stmt->NextResultRow() ) {
