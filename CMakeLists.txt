@@ -188,21 +188,22 @@ EndIf()
 # the array .
 # The extension is already found.  Any number of sources could be listed here.
 
-Set(INCLUDE_DIRECTORIES
+Set(BASE_INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}
-  ${FAIRROOT_INCLUDE_DIR}
-  ${ROOT_INCLUDE_DIR}
-  ${BASE_INCLUDE_DIRECTORIES}
-
-  ${CMAKE_SOURCE_DIR}/dbase
   ${CMAKE_SOURCE_DIR}/dbInterface
   ${CMAKE_SOURCE_DIR}/dbValidation
   ${CMAKE_SOURCE_DIR}/dbUtils
   ${CMAKE_SOURCE_DIR}/dbInput
   ${CMAKE_SOURCE_DIR}/dbIO
-
-  ### 3rdParty
   ${CMAKE_SOURCE_DIR}/db3rdParty/
+
+  ${FAIRROOT_INCLUDE_DIR}
+  ${ROOT_INCLUDE_DIR}
+  ${BASE_INCLUDE_DIRECTORIES}
+)
+
+Set(INCLUDE_DIRECTORIES
+  ${BASE_INCLUDE_DIRECTORIES}
 )
 
 Set(SYSTEM_INCLUDE_DIRECTORIES
