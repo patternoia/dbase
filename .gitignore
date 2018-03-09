@@ -5,3 +5,4 @@ TAGS
 *.root
 dbClassGen
 dbSchemaStore
+build

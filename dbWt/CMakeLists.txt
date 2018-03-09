@@ -10,36 +10,40 @@
 
 Message("-- Wt is FOUND .... compiling FairDbWt Project starting ... ")
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-deprecated-declarations")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-inconsistent-missing-override")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wno-potentially-evaluated-expression")
+
 set(INCLUDE_DIRECTORIES
-${BASE_INCLUDE_DIRECTORIES}
-${ROOT_INCLUDE_DIR}
-${ZMQ_INCLUDE_DIR}
-${Boost_INCLUDE_DIRS}
-${CMAKE_SOURCE_DIR}/parbase
-${Boost_INCLUDE_DIRS}
-${Wt_INCLUDE_DIR}
-${Wt_INCLUDE_DIR}/Wt
-${CMAKE_SOURCE_DIR}/dbase/dbWt
-${CMAKE_SOURCE_DIR}/dbase/dbWt/treeview
-${CMAKE_SOURCE_DIR}/dbase/dbWt/graphics
-${CMAKE_SOURCE_DIR}/dbase/dbWt/auth/model
-${CMAKE_SOURCE_DIR}/dbase/dbInterface
-${CMAKE_SOURCE_DIR}/dbase/dbValidation
-${CMAKE_SOURCE_DIR}/dbase/dbInput
-${CMAKE_SOURCE_DIR}/dbase/dbIO
-${CMAKE_SOURCE_DIR}/dbase/dbUtils
+  ${CMAKE_SOURCE_DIR}
+  ${FAIRROOT_INCLUDE_DIR}
+  ${ROOT_INCLUDE_DIR}
+  ${BASE_INCLUDE_DIRECTORIES}
+
+  ${Wt_INCLUDE_DIR}
+  ${Wt_INCLUDE_DIR}/Wt
+  ${CMAKE_SOURCE_DIR}/dbWt
+  ${CMAKE_SOURCE_DIR}/dbWt/treeview
+  ${CMAKE_SOURCE_DIR}/dbWt/graphics
+  ${CMAKE_SOURCE_DIR}/dbWt/auth/model
+  ${CMAKE_SOURCE_DIR}/dbInterface
+  ${CMAKE_SOURCE_DIR}/dbValidation
+  ${CMAKE_SOURCE_DIR}/dbInput
+  ${CMAKE_SOURCE_DIR}/dbIO
+  ${CMAKE_SOURCE_DIR}/dbUtils
 )
 
 include_directories(${INCLUDE_DIRECTORIES})
 
 if (Boost_FOUND)
   Message("-- FairDbWt ... copying config file ...")
-  file(COPY  ${CMAKE_SOURCE_DIR}/dbase/dbExamples/cbm_sts/macros/dbconfig.sh DESTINATION ${CMAKE_BINARY_DIR}/bin/ )
+  file(COPY  ${CMAKE_SOURCE_DIR}/dbExamples/cbm_sts/macros/dbconfig.sh DESTINATION ${CMAKE_BINARY_DIR}/bin/ )
 endIf (Boost_FOUND)
 
 set(LINK_DIRECTORIES
-    ${ROOT_LIBRARY_DIR}
-    ${Boost_LIBRARY_DIRS}
+  ${ROOT_LIBRARY_DIR}
+  ${FAIRROOT_LIBRARY_DIR}
+  ${Boost_LIBRARY_DIRS}
 )
 
 link_directories(${LINK_DIRECTORIES})
@@ -96,7 +100,7 @@ if (Boost_FOUND)
 
 else (Boost_FOUND)
   # will not work anyway without boost !
-  set(DEPENDENCIES Base FairDB ParBase 
+  set(DEPENDENCIES Base FairDB ParBase
     ${Wt_LIBRARY} ${Wt_HTTP_LIBRARY}
 )
 endif (Boost_FOUND)
