@@ -54,7 +54,7 @@ set(LIBRARY_NAME FairDbMQ)
 
 if (Boost_FOUND)
   set(DEPENDENCIES
-    Base FairDB ParBase FairMQ ${ZMQ_LIBRARY_SHARED} boost_thread boost_system boost_serialization)
+    Base FairDB ParBase FairMQ fairmq_logger ${ZMQ_LIBRARY_SHARED} boost_thread boost_system boost_serialization)
 else (Boost_FOUND)
   set(DEPENDENCIES Base  FairDB ParBase)
 endif (Boost_FOUND)
