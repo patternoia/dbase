@@ -92,7 +92,7 @@ set(LIBRARY_NAME FairDbWt)
 
 if (Boost_FOUND)
   set(DEPENDENCIES
-    RHTTP Base FairDB ParBase
+    RHTTP Base FairDB ParBase Tree Postscript
     boost_thread boost_system boost_serialization boost_signals
     boost_date_time  boost_regex boost_program_options boost_signals boost_random boost_system
     ${Wt_LIBRARY} ${Wt_HTTP_LIBRARY} ${Wt_LIBRARIES}
@@ -100,7 +100,7 @@ if (Boost_FOUND)
 
 else (Boost_FOUND)
   # will not work anyway without boost !
-  set(DEPENDENCIES Base FairDB ParBase
+  set(DEPENDENCIES Base FairDB ParBase Tree Postscript
     ${Wt_LIBRARY} ${Wt_HTTP_LIBRARY}
 )
 endif (Boost_FOUND)
