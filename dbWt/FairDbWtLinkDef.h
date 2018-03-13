@@ -12,7 +12,7 @@
 #pragma link off all classes;
 #pragma link off all functions;
 
-#pragma link C++ class FairDbWtPasswordData-;
+#pragma link C++ struct FairDbWtPasswordData-;
 #pragma link C++ class FairDbWtPasswordService-;
 
 #endif

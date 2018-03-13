@@ -26,7 +26,7 @@ set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/dbWt/treeview
   ${CMAKE_SOURCE_DIR}/dbWt/graphics
   ${CMAKE_SOURCE_DIR}/dbWt/auth/model
-  ${CMAKE_SOURCE_DIR}/REST
+  ${CMAKE_SOURCE_DIR}/dbWt/REST
   ${CMAKE_SOURCE_DIR}/dbInterface
   ${CMAKE_SOURCE_DIR}/dbValidation
   ${CMAKE_SOURCE_DIR}/dbInput
@@ -50,6 +50,8 @@ set(LINK_DIRECTORIES
 link_directories(${LINK_DIRECTORIES})
 
 set(NO_DICT_SRCS
+auth/model/User.C
+auth/model/Session.C
 FairDbWtApplication.cxx
 FairDbWtMainWidget.cxx
 FairDbWtConnMySQLWidget.cxx
@@ -75,8 +77,6 @@ graphics/FairDbWtJsRootProxy.cxx
 graphics/FairDbWtConfigViewDialog.cxx
 graphics/FairDbWtCanvasWidget.cxx
 graphics/FairDbWtRtopFrame.cxx
-auth/model/User.C
-auth/model/Session.C
 
 REST/FairDbWtUserSessionStore.cxx
 REST/FairDbWtBaseResource.cxx
@@ -88,6 +88,14 @@ REST/FairDbWtAdminResource.cxx
 set(SRCS
 REST/FairDbWtPasswordService.cxx
 )
+
+CHANGE_FILE_EXTENSION(*.cxx *.h INSTALL_HEADERS "${NO_DICT_SRCS}")
+CHANGE_FILE_EXTENSION(*.C *.h INSTALL_HEADERS "${INSTALL_HEADERS}")
+
+foreach ( hdr ${INSTALL_HEADERS} )
+    get_filename_component( dir ${hdr} DIRECTORY )
+    install( FILES ${hdr} DESTINATION include )
+endforeach()
 
 install(FILES "REST/FairDbWtGenericResource.h" DESTINATION include)
 install(FILES "REST/FairDbWtGenericResource.tpl" DESTINATION include)
@@ -112,7 +120,7 @@ endif (Boost_FOUND)
 
 # Add libcrypt in case of Linux OSes
 if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
-	set(DEPENDENCIES ${DEPENDENCIES} crypt)
+  set(DEPENDENCIES ${DEPENDENCIES} crypt)
     message(STATUS ">>> --FairDbWt-- Found Linux ---> ${DEPENDENCIES}")
 endif()
 
