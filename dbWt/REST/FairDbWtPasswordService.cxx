@@ -21,6 +21,6 @@ bool FairDbWtPasswordService::VerifyPassword(std::string password, FairDbWtPassw
   Wt::Auth::BCryptHashFunction *bcrypt = new Wt::Auth::BCryptHashFunction(7);
   verifier.addHashFunction(bcrypt);
 
-  Wt::Auth::PasswordHash hash = verifier.hashPassword(password);
+  Wt::Auth::PasswordHash hash(bcrypt->name(), passwordData.Salt, passwordData.Hash);
   return verifier.verify(password, hash);
 }

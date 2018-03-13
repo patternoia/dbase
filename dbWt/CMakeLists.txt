@@ -26,6 +26,7 @@ set(INCLUDE_DIRECTORIES
   ${CMAKE_SOURCE_DIR}/dbWt/treeview
   ${CMAKE_SOURCE_DIR}/dbWt/graphics
   ${CMAKE_SOURCE_DIR}/dbWt/auth/model
+  ${CMAKE_SOURCE_DIR}/REST
   ${CMAKE_SOURCE_DIR}/dbInterface
   ${CMAKE_SOURCE_DIR}/dbValidation
   ${CMAKE_SOURCE_DIR}/dbInput
@@ -48,7 +49,7 @@ set(LINK_DIRECTORIES
 
 link_directories(${LINK_DIRECTORIES})
 
-set(SRCS
+set(NO_DICT_SRCS
 FairDbWtApplication.cxx
 FairDbWtMainWidget.cxx
 FairDbWtConnMySQLWidget.cxx
@@ -82,12 +83,16 @@ REST/FairDbWtBaseResource.cxx
 REST/FairDbWtAuthResource.cxx
 REST/FairDbWtUserResource.cxx
 REST/FairDbWtAdminResource.cxx
+)
+
+set(SRCS
 REST/FairDbWtPasswordService.cxx
 )
 
 install(FILES "REST/FairDbWtGenericResource.h" DESTINATION include)
 install(FILES "REST/FairDbWtGenericResource.tpl" DESTINATION include)
 
+set(LINKDEF FairDbWtLinkDef.h)
 set(LIBRARY_NAME FairDbWt)
 
 if (Boost_FOUND)
