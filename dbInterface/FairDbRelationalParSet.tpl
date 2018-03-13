@@ -56,6 +56,13 @@ void FairDbRelationalParSet<T>::store(UInt_t rid)
   if (fId == -1)
   {
     SetId(AllocateNextId());
+    if (fId == -1) {
+      DBLOG("FairDb", FairDbLog::kInfo)
+        << "FairDbRelationalParSet<T>::store()"
+        << " refuse to store entitty with Id = -1"
+        << std::endl;
+      return;
+    }
   }
 
   FairDbGenericParSet<T>::store(rid);
@@ -78,7 +85,7 @@ Int_t FairDbRelationalParSet<T>::AllocateNextId()
   std::string tableName = this->GetTableName();
   bool tableExists = this->fMultConn->TableExists(tableName, this->fDbEntry);
   if (!tableExists) {
-    return -1;
+    return 0;
   }
 
   std::unique_ptr<FairDbStatement> statement(this->fMultConn->CreateStatement(this->fDbEntry));
@@ -88,7 +95,7 @@ Int_t FairDbRelationalParSet<T>::AllocateNextId()
 
   FairDbConnectionPool::BLock Block(this->fMultConn->CreateStatement(this->fDbEntry), tableName, tableName);
   if ( ! Block.IsBLocked() ) {
-    DBLOG("FairDb",FairDbLog::kInfo)<< "FairDbRelationalParSet<T>::AllocateNextId Unable to lock " << tableName << endl;
+    DBLOG("FairDb",FairDbLog::kInfo)<< "FairDbRelationalParSet<T>::AllocateNextId Unable to lock " << tableName << std::endl;
     return -1;
   }
 
@@ -96,14 +103,10 @@ Int_t FairDbRelationalParSet<T>::AllocateNextId()
   sql << "SELECT ID FROM " << tableName << " ORDER BY ID DESC LIMIT 1";
   std::unique_ptr<TSQLStatement> stmt(statement->ExecuteQuery(sql.c_str()));
   statement->PrintExceptions(FairDbLog::kInfo);
-  Int_t id = -1;
-  if ( stmt && stmt->NextResultRow() ) {
+
+  Int_t id = 0;
+  if (stmt && stmt->NextResultRow()) {
     id = stmt->GetInt(0) + 1;
-  } else {
-    DBLOG("FairDb", FairDbLog::kInfo)
-      << "FairDbRelationalParSet<T>::AllocateNextId"
-      << " Unable to allocate the next Id"
-      << " due to above error" << endl;
   }
 
   return id;
