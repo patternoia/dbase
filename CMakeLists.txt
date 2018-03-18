@@ -330,3 +330,5 @@ endif()
 if (Boost_FOUND)
 add_subdirectory(dbExamples)
 endif()
+
+add_subdirectory(dbUtils/Qr)
