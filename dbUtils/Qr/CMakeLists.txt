@@ -45,6 +45,8 @@ install(FILES "${CMAKE_SOURCE_DIR}/db3rdParty/qr/BitBuffer.hpp" DESTINATION incl
 install(FILES "${CMAKE_SOURCE_DIR}/db3rdParty/qr/QrCode.hpp" DESTINATION include/qr)
 install(FILES "${CMAKE_SOURCE_DIR}/db3rdParty/qr/QrSegment.hpp" DESTINATION include/qr)
 
+install(FILES "macro/QrPage.C" DESTINATION share/FairDb/macro/Qr)
+install(FILES "macro/QrInput.txt" DESTINATION share/FairDb/macro/Qr)
 
 set(LINKDEF FairDbQrLinkDef.h)
 set(LIBRARY_NAME FairDbQr)
