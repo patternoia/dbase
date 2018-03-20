@@ -11,6 +11,7 @@
 Message("-- Compiling FairDbQr")
 
 set(INCLUDE_DIRECTORIES
+  ${CMAKE_SOURCE_DIR}/db3rdParty
   ${CMAKE_SOURCE_DIR}/dbUtils/Qr
 )
 
