@@ -3,7 +3,7 @@
 
 #include "Rtypes.h"
 #include "TObject.h"
-#include "TH2D.h"
+#include "TH2F.h"
 
 #include "qr/BitBuffer.hpp"
 #include "qr/QrCode.hpp"
@@ -12,7 +12,7 @@
 class FairDbQr: public TObject
 {
   public:
-    static TH2C* EncodeString(std::string string);
+    static TH2F* EncodeString(std::string string);
     ClassDef(FairDbQr, 0);
 };
 

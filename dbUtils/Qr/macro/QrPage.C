@@ -40,7 +40,7 @@ void QrPage()
   {
     qrCanvas->cd(i+1);
 
-    TH2C *hcol1 = FairDbQr::EncodeString(ids[i]);
+    TH2F *hcol1 = FairDbQr::EncodeString(ids[i]);
     hcol1->SetName(TString::Format("QR%d", i).Data());
 
     hcol1->Draw("COL A");
